@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/primaryOrange</color>
+    <color name="colorPrimaryDark">@color/primaryBlueDark</color>
+    <color name="colorAccent">@color/primaryOrange</color>
+
+    <color name="background1">@color/grey</color>
+    <color name="background2">@color/primaryBlueDark</color>
+    <color name="background3">@color/primaryOrange</color>
+    <color name="background4">@color/blue_alpha</color>
+
+    <color name="text1">@color/primaryBlueDark</color>
+    <color name="text2">@color/white</color>
+    <color name="text3">@color/primaryOrange</color>
+
+    <color name="black">#444444</color>
+    <color name="white">#eeeeee</color>
+    <color name="white_alpha">#66eeeeee</color>
+    <color name="grey">#f4f4f4</color>
+    <color name="blue_alpha">#ee232F34</color>
+
+    <color name="primaryBlue">#344955</color>
+    <color name="primaryBlueDark">#232F34</color>
+    <color name="secondaryBlue">#4A6572</color>
+    <color name="primaryOrange">#F9AA33</color>
+
+</resources>

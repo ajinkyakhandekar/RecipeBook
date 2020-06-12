@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "73186015914",
+    "firebase_url": "https://recipe-book-cba10.firebaseio.com",
+    "project_id": "recipe-book-cba10",
+    "storage_bucket": "recipe-book-cba10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73186015914:android:5874505d9fd543905daed3",
+        "android_client_info": {
+          "package_name": "com.tghc.recipebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73186015914-g92tua1b0290bbkn50fvptaogfb8922n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxjntngWCF1kJ5Ooj1oKYWtUdbv7_ZSoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73186015914-g92tua1b0290bbkn50fvptaogfb8922n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

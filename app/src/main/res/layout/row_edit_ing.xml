@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/margin_medium"
+    android:weightSum="16">
+
+    <TextView
+        android:id="@+id/text_row_ing_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textColor="@color/text1"
+        android:textSize="@dimen/text_small" />
+
+    <EditText
+        android:id="@+id/edit_row_ing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:background="@drawable/rect_stroke"
+        android:inputType="textCapSentences"
+        android:maxLength="25"
+        android:padding="@dimen/padding_small"
+        android:textColor="@color/text1"
+        android:nextFocusRight="@+id/edit_row_ing_num"
+        android:textSize="@dimen/text_medium" />
+
+    <EditText
+        android:id="@+id/edit_row_ing_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_small"
+        android:layout_weight="3"
+        android:background="@drawable/rect_stroke"
+        android:inputType="numberDecimal"
+        android:maxLength="4"
+        android:padding="@dimen/padding_small"
+        android:textColor="@color/text1"
+        android:textSize="@dimen/text_medium" />
+
+    <TextView
+        android:id="@+id/text_row_ing_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_small"
+        android:layout_weight="3"
+        android:background="@drawable/rect_stroke"
+        android:padding="@dimen/padding_small"
+        android:textColor="@color/text1"
+        android:textSize="@dimen/text_medium" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/padding_medium"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/image_row_ing_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circle_orange"
+            android:rotation="45"
+            android:src="@drawable/ic_add_small" />
+    </RelativeLayout>
+
+</LinearLayout>

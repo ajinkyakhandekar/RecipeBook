@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/text_row_pro_count"
+        style="@style/text1" />
+
+    <ImageView
+        android:id="@+id/image_row_pro_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/text_row_pro_count"
+        android:background="@drawable/circle_orange"
+        android:rotation="45"
+        android:src="@drawable/ic_add_small" />
+
+    <EditText
+        android:id="@+id/edit_row_pro"
+        style="@style/edit1"
+        android:layout_below="@+id/text_row_pro_count"
+        android:gravity="top|start"
+        android:inputType="textCapSentences|textMultiLine"
+        android:minLines="3" />
+
+</RelativeLayout>

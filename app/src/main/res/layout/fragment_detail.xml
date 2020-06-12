@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/app_padding_half">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/details_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"/>
+
+                <!-- <androidx.recyclerview.widget.RecyclerView
+                     android:id="@+id/recycler_details_image"
+                     android:layout_width="match_parent"
+                     android:layout_height="240dp"/>-->
+
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/circle_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/details_view_pager"
+                    android:layout_centerHorizontal="true"
+                    android:padding="@dimen/app_padding_half"
+                    app:ci_drawable="@drawable/circle_indicator_round"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background3">
+
+                <TextView
+                    android:id="@+id/text_display_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:layout_toStartOf="@+id/image_overflow"
+                    android:paddingStart="@dimen/padding_large"
+                    android:paddingTop="@dimen/padding_small"
+                    android:paddingEnd="@dimen/padding_large"
+                    android:paddingBottom="@dimen/padding_small"
+                    android:textColor="@color/text1"
+                    android:textSize="@dimen/text_large"/>
+
+                <ImageView
+                    android:id="@+id/image_overflow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/padding_large"
+                    android:src="@drawable/ic_overflow"/>
+            </RelativeLayout>
+
+            <include
+                android:id="@+id/include_display"
+                layout="@layout/include_display"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp"
+        android:fitsSystemWindows="true">
+
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_medium"
+            android:background="@drawable/circle_orange"
+            android:padding="@dimen/padding_medium"
+            android:src="@drawable/ic_back"
+            app:layout_scrollFlags="scroll|enterAlways"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

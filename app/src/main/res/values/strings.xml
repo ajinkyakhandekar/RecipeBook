@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Recipe Book</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_edit">EditActivity</string>
+    <string name="large_text">Editor</string>
+    <string name="title">Title</string>
+    <string name="desc">Description</string>
+    <string name="cuisine">Cuisine</string>
+    <string name="servings">Servings</string>
+    <string name="prep_time">Preparation Time</string>
+    <string name="cook_time">Cooking Time</string>
+    <string name="procedure">Procedure</string>
+    <string name="ingredient">Ingredients</string>
+    <string name="notes_tips"><![CDATA[Notes & Tips]]></string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit">Edit</string>
+    <string name="tags">Tags</string>
+    <string name="app_name_2">\u0020 Recipe Book</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/app_padding_half">
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_tag"
+        android:layout_width="match_parent"
+        android:overScrollMode="never"
+        android:paddingTop="@dimen/padding_small"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/text_display_desc"
+        style="@style/text2" />
+
+    <View
+        style="@style/view1" />
+
+    <LinearLayout
+        android:id="@+id/lin_display_details"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"/>
+
+
+    <View
+        style="@style/view1" />
+
+    <TextView
+        style="@style/text_t"
+        android:text="@string/ingredient" />
+
+    <LinearLayout
+        android:id="@+id/lin_display_ing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <View
+        style="@style/view1" />
+
+    <TextView
+        style="@style/text_t"
+        android:text="@string/procedure" />
+
+    <LinearLayout
+        android:id="@+id/lin_display_pro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <View
+        style="@style/view1" />
+
+    <TextView
+        android:id="@+id/text_display_notes"
+        style="@style/text2" />
+</LinearLayout>
