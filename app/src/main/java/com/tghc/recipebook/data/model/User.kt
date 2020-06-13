@@ -1,7 +1,9 @@
-package com.tghc.recipebook.data.modelRequest
+package com.tghc.recipebook.data.model
 
+import androidx.annotation.Keep
 import java.util.*
 
+@Keep
 data class User (
         var username:String="",
         var name:String="",

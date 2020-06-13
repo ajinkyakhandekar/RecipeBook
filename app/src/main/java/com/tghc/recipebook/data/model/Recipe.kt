@@ -1,10 +1,8 @@
-package com.tghc.recipebook.data.modelRequest
+package com.tghc.recipebook.data.model
 
-import android.os.Parcelable
 import androidx.annotation.Keep
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ServerTimestamp
-import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
@@ -12,11 +10,12 @@ import kotlin.collections.ArrayList
 @Keep
 data class Recipe (
         @DocumentId
-        var postId: String="",
+        var recipeId: String="",
         var userId:String="",
         var id: String="",
         var title: String="",
         var type: String="",
+        var chef: String="",
         var cuisine: String="",
         var cTime: String="",
         var pTime: String="",

@@ -3,7 +3,7 @@ package com.tghc.recipebook.data.viewmodel
 import androidx.lifecycle.LiveDataScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.tghc.recipebook.data.modelRequest.Recipe
+import com.tghc.recipebook.data.model.Recipe
 import com.tghc.recipebook.data.response.BaseResponse
 import com.tghc.recipebook.data.service.FirebaseService
 import kotlinx.coroutines.Dispatchers

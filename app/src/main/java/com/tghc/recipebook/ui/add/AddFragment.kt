@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.tghc.recipebook.R
 import com.tghc.recipebook.constant.MSG_FIREBASE_ERROR
 import com.tghc.recipebook.constant.MSG_RECIPE_SAVED
-import com.tghc.recipebook.data.modelRequest.Recipe
+import com.tghc.recipebook.data.model.Recipe
 import com.tghc.recipebook.data.viewmodel.FirebaseViewModel
 import com.tghc.recipebook.extention.*
 import com.tghc.recipebook.ui.adapter.AddPagerAdapter
@@ -23,7 +23,7 @@ class AddFragment : Fragment() {
 
     private lateinit var dialog: Dialog
     lateinit var recipe: Recipe
-    private var flagEdit = false
+    var flagEdit = false
     private val firebaseViewModel: FirebaseViewModel by viewModels()
     private lateinit var addDet: AddDet
     private lateinit var addIng: AddIng
@@ -88,7 +88,7 @@ class AddFragment : Fragment() {
         })
     }
 
-    private fun dialogExit() {
+    fun dialogExit() {
         dialog = showAlertDialog("Exit without saving?",
             isCancelable = true, isCancelableTouchOutside = true, builderFunction = {
                 yesButton {

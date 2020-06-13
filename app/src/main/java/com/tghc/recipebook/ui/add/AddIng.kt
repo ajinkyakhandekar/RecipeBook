@@ -1,7 +1,6 @@
 package com.tghc.recipebook.ui.add
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.tghc.recipebook.R
 import com.tghc.recipebook.constant.SIZE_ING
 import com.tghc.recipebook.constant.UNITS
-import com.tghc.recipebook.data.modelRequest.Ingredient
+import com.tghc.recipebook.data.model.Ingredient
 import com.tghc.recipebook.extention.*
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
 import kotlinx.android.synthetic.main.add_ing.*
@@ -27,11 +26,11 @@ class AddIng(private val addFragment: AddFragment) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*if (TextUtils.isEmpty(postId)) {
+        if (!addFragment.flagEdit) {
             for (i in 0 until SIZE_ING) {
                 ingredient.add(Ingredient("", "", ""))
             }
-        }*/
+        }
         
         addIngAdapter = in_recycler_view.withAdapter(ingredient, R.layout.row_edit_ing, { ing, position ->
             val pos = position + 1

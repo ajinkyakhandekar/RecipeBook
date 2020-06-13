@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.tghc.recipebook.R
+import com.tghc.recipebook.constant.SIZE_PRO
 import com.tghc.recipebook.extention.*
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
 import kotlinx.android.synthetic.main.add_pro.*
@@ -24,11 +25,11 @@ class AddPro(private val addFragment: AddFragment) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /* if (TextUtils.isEmpty(recipe.postId)) {
+         if (!addFragment.flagEdit) {
              for (i in 0 until SIZE_PRO) {
-                 recipe.procedure.add("")
+                 procedure.add("")
              }
-         }*/
+         }
 
         addProAdapter = pro_recycler_view.withAdapter(procedure, R.layout.row_edit_pro, { pro, position ->
             val pos = position + 1

@@ -21,7 +21,7 @@ class AddSave(private val addFragment: AddFragment) : Fragment() {
 
 
         text_save.setOnClickListener { addFragment.saveRecipe() }
-        text_cancel.setOnClickListener { addFragment.navigateBack() }
+        text_cancel.setOnClickListener { addFragment.dialogExit() }
     }
 
     fun getNotes(): String {
