@@ -14,14 +14,18 @@ import com.nabinbhandari.android.permissions.Permissions
 import com.tghc.recipebook.R
 import com.tghc.recipebook.constant.REQUEST_CODE_IMAGE
 import com.tghc.recipebook.extention.create
+import com.tghc.recipebook.extention.pos
+import com.tghc.recipebook.extention.setGlideImage
+import com.tghc.recipebook.extention.withAdapter
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
 import kotlinx.android.synthetic.main.add_pic.*
+import kotlinx.android.synthetic.main.row_edit_pic.*
 
 
 class AddPic(private val addFragment: AddFragment) : Fragment() {
 
-    lateinit var addPicAdapter: RecyclerAdapter<String>
-    lateinit var uri: ArrayList<Uri>
+    lateinit var addPicAdapter: RecyclerAdapter<Uri>
+    lateinit var uri: MutableList<Uri>
     private val recipe = addFragment.recipe
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -35,15 +39,16 @@ class AddPic(private val addFragment: AddFragment) : Fragment() {
             uri.add(Uri.parse(image))
         }
 
-        /*addPicAdapter = AddPicAdapter(uri) { position ->
-            items.images.removeAt(position)
-            uri.removeAt(position)
-            addPicAdapter.notifyDataSetChanged()
-        }
 
-        binding.picRecyclerView.layoutManager = GridLayoutManager(activity, 2)
-        binding.picRecyclerView.adapter = addPicAdapter
-*/
+        addPicAdapter = pic_recycler_view.withAdapter(uri, R.layout.row_edit_pic, { data, position ->
+            image_row_pic.setGlideImage(data, isCenterCrop = true)
+        }, {
+            image_pic_delete.setOnClickListener {
+                uri.removeAt(pos())
+                addPicAdapter.notifyDataSetChanged()
+            }
+        })
+
 
         fab_pic.setOnClickListener {
             val permissions = arrayOf(

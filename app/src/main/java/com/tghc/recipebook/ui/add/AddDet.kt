@@ -3,16 +3,24 @@ package com.tghc.recipebook.ui.add
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.tghc.recipebook.R
 import com.tghc.recipebook.constant.SERVE_TYPE
 import com.tghc.recipebook.extention.create
+import com.tghc.recipebook.extention.getString
+import com.tghc.recipebook.extention.pos
+import com.tghc.recipebook.extention.withAdapter
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
 import kotlinx.android.synthetic.main.add_dt.*
+import kotlinx.android.synthetic.main.row_tag.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -38,33 +46,35 @@ class AddDet(private val addFragment: AddFragment) : Fragment() {
         edt_cook_time.text = recipe.cTime
         tagsArray = recipe.tags
 
+        //tags
+        val flexBoxLayoutManager = FlexboxLayoutManager(requireActivity())
+        flexBoxLayoutManager.flexDirection = FlexDirection.ROW
+        flexBoxLayoutManager.justifyContent = JustifyContent.FLEX_START
+        recycler_tag.layoutManager = flexBoxLayoutManager
+        recycler_tag.withAdapter(tagsArray, R.layout.row_tag,{tag, position ->
 
-        //Todo: tags
+            text_tag.text = tag
+        },{
+            image_tag_delete.setOnClickListener {
+                tagsArray.removeAt(pos())
+                tagAdapter.notifyDataSetChanged() }
+        })
 
-        /*    val flexBoxLayoutManager = FlexboxLayoutManager(activity)
-            flexBoxLayoutManager.flexDirection = FlexDirection.ROW
-            flexBoxLayoutManager.justifyContent = JustifyContent.FLEX_START
-            recycler_tag.layoutManager = flexBoxLayoutManager
-            tagAdapter = TagAdapter(recipe.tags, true) { position ->
-                tagsArray.removeAt(position)
+        image_tag_add.setOnClickListener {
+            if (!TextUtils.isEmpty(edt_tags.getString())) {
+                tagsArray.add(edt_tags.getString())
                 tagAdapter.notifyDataSetChanged()
+                edt_tags.setText("")
             }
-            recycler_tag.adapter = tagAdapter
+        }
 
-            image_tag_add.setOnClickListener {
-                if (!TextUtils.isEmpty(edt_tags.getText().toString().trim())) {
-                    tagsArray.add(edt_tags.getText().toString().trim())
-                    tagAdapter.notifyDataSetChanged()
-                    edt_tags.setText("")
-                }
-            }*/
 
         //pTime
-        val pTimeSetListener = OnTimeSetListener { view, hourOfDay, minute ->
+        val pTimeSetListener = OnTimeSetListener { _, hourOfDay, minute ->
             edt_prep_time.text = getTimer(hourOfDay, minute)
         }
 
-       /* edt_prep_time.setOnClickListener {
+        edt_prep_time.setOnClickListener {
             val mTimePickerDialog = TimePickerDialog(
                 activity,
                 R.style.DialogTheme,
@@ -72,14 +82,14 @@ class AddDet(private val addFragment: AddFragment) : Fragment() {
                 0, 0, true
             )
             mTimePickerDialog.show()
-        }*/
+        }
 
         //cTime
-        val cTimeSetListener = OnTimeSetListener { view, hourOfDay, minute ->
+        val cTimeSetListener = OnTimeSetListener { _, hourOfDay, minute ->
             edt_cook_time.text = getTimer(hourOfDay, minute)
         }
 
-       /* edt_cook_time.setOnClickListener {
+        edt_cook_time.setOnClickListener {
             val mTimePickerDialog = TimePickerDialog(
                 requireActivity(),
                 R.style.DialogTheme,
@@ -87,7 +97,7 @@ class AddDet(private val addFragment: AddFragment) : Fragment() {
                 0, 0, true
             )
             mTimePickerDialog.show()
-        }*/
+        }
 
         //Serving
         edt_serve_type.setOnClickListener {
@@ -101,12 +111,16 @@ class AddDet(private val addFragment: AddFragment) : Fragment() {
     }
 
     private fun getTimer(hourOfDay: Int, minute: Int): String? {
-        return if (hourOfDay == 0) {
-            String.format(Locale.US, "%02d", minute) + " min"
-        } else if (minute == 0) {
-            String.format(Locale.US, "%02d", hourOfDay) + " hr"
-        } else {
-            String.format(Locale.US, "%02d", hourOfDay) + " hr  " + String.format(Locale.US, "%02d", minute) + " min"
+        return when {
+            hourOfDay == 0 -> {
+                String.format(Locale.US, "%02d", minute) + " min"
+            }
+            minute == 0 -> {
+                String.format(Locale.US, "%02d", hourOfDay) + " hr"
+            }
+            else -> {
+                String.format(Locale.US, "%02d", hourOfDay) + " hr  " + String.format(Locale.US, "%02d", minute) + " min"
+            }
         }
     }
 

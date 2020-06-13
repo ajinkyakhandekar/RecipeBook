@@ -17,8 +17,9 @@ object FirebaseService {
         return documentSnapshot.exists()
     }
 
-    suspend fun postRecipeService(recipe: Recipe): Void {
-        return db.collection(collection_recipe).document().set(recipe).await()
+    suspend fun postRecipeService(recipe: Recipe): Boolean {
+        db.collection(collection_recipe).document().set(recipe).await()
+        return true
     }
 
 }

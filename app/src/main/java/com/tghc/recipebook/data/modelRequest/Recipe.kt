@@ -23,7 +23,7 @@ data class Recipe (
         var desc: String="",
         var servings: String="",
         var notes: String="",
-        var ingredients: MutableList<Ingredient>?= ArrayList(),
+        var ingredient: MutableList<Ingredient>?= ArrayList(),
         var procedure: MutableList<String> = ArrayList(),
         var images: MutableList<String> = ArrayList(),
         var tags: MutableList<String> = ArrayList(),

@@ -20,8 +20,8 @@ class AddSave(private val addFragment: AddFragment) : Fragment() {
         edit_notes.setText(recipe.notes)
 
 
-        text_save.setOnClickListener { }
-        text_cancel.setOnClickListener { }
+        text_save.setOnClickListener { addFragment.saveRecipe() }
+        text_cancel.setOnClickListener { addFragment.navigateBack() }
     }
 
     fun getNotes(): String {

@@ -14,7 +14,7 @@ class FirebaseViewModel : ViewModel(){
         onResponse(this, FirebaseService.getRecipeListService(username))
     }
 
-    fun postRecipe(recipe: Recipe) = liveData<BaseResponse<Void>>(Dispatchers.IO) {
+    fun postRecipe(recipe: Recipe) = liveData<BaseResponse<Boolean>>(Dispatchers.IO) {
         onResponse(this, FirebaseService.postRecipeService(recipe))
     }
 

@@ -18,6 +18,12 @@ fun runDelayed(delay: Long, action: () -> Unit) {
     Handler().postDelayed(action, delay)
 }
 
+fun isEmpty(data: String?): Boolean {
+    return if (data == null)
+        true
+    else data == ""
+}
+
 inline fun catchAll(action: () -> Unit) {
     try {
         action()
@@ -38,7 +44,7 @@ fun splitStringToList(input:String?): List<String> {
     return input?.split(",")?.map { it.trim() } ?: ArrayList()
 }
 
-inline fun <T : Any?> response(response: BaseResponse<T>, success: (data: T) -> Unit, fail: (msg: String) -> Unit ) {
+inline fun <T : Any?> response(response: BaseResponse<T>, success: (data: T) -> Unit , fail: (msg: String) ->Unit) {
     //progressDialog.dismiss()
     //networkDialog = Visibility.GONE
     when (response.status) {

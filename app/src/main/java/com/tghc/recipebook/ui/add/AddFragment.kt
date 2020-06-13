@@ -1,26 +1,29 @@
 package com.tghc.recipebook.ui.add
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.tghc.recipebook.R
+import com.tghc.recipebook.constant.MSG_FIREBASE_ERROR
+import com.tghc.recipebook.constant.MSG_RECIPE_SAVED
 import com.tghc.recipebook.data.modelRequest.Recipe
 import com.tghc.recipebook.data.viewmodel.FirebaseViewModel
 import com.tghc.recipebook.extention.*
+import com.tghc.recipebook.ui.adapter.AddPagerAdapter
+import kotlinx.android.synthetic.main.fragment_add.*
 
 class AddFragment : Fragment() {
 
     private lateinit var dialog: Dialog
     lateinit var recipe: Recipe
-    private var flagEdit=false
+    private var flagEdit = false
     private val firebaseViewModel: FirebaseViewModel by viewModels()
     private lateinit var addDet: AddDet
     private lateinit var addIng: AddIng
@@ -34,40 +37,63 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(arguments?.isEmpty!!){
+        if (arguments?.isEmpty!!) {
             flagEdit = false
             recipe = Recipe()
-        }else{
+        } else {
             flagEdit = true
             recipe = arguments?.getSerializable("recipeData") as Recipe
         }
 
-         addDet = AddDet(this)
-         addIng = AddIng(this)
-         addPro = AddPro(this)
+        addDet = AddDet(this)
+        addIng = AddIng(this)
+        addPro = AddPro(this)
         addPic = AddPic(this)
         addSave = AddSave(this)
 
-
-        firebaseViewModel.postRecipe(recipe).observe(requireActivity(), Observer { baseResponse ->
-            response(baseResponse, {
-
-            }, {
-
-            })
-        })
+        val fragmentList = arrayListOf(addDet, addIng, addPro, addPic, addSave)
+        val addPagerAdapter = AddPagerAdapter(requireActivity(), fragmentList)
+        viewpager_add.adapter = addPagerAdapter
+        viewpager_add.offscreenPageLimit = 4
 
         fragmentBackPressed {
-            dialogSave()
+            dialogExit()
         }
     }
 
-    private fun dialogSave() {
+    fun saveRecipe() {
+        if (TextUtils.isEmpty(addDet.getTitle())) return
+
+        //recipe.userId = firebaseUser.uid
+        recipe.title = addDet.getTitle()
+        recipe.desc = addDet.getDesc()
+        recipe.cuisine = addDet.getCuisine()
+        recipe.servings = addDet.getServing()
+        recipe.type = addDet.getServingType()
+        recipe.cTime = addDet.getCTime()
+        recipe.pTime = addDet.getPTime()
+        recipe.tags = addDet.tagsArray
+
+        recipe.ingredient = addIng.getIngredients()
+        recipe.procedure = addPro.getProcedure()
+        recipe.images = addPic.getImages()
+        recipe.notes = addSave.getNotes()
+
+        firebaseViewModel.postRecipe(recipe).observe(requireActivity(), Observer { baseResponse ->
+            response(baseResponse, {
+                toast(MSG_RECIPE_SAVED)
+            }, {
+                toast(MSG_FIREBASE_ERROR)
+            })
+        })
+    }
+
+    private fun dialogExit() {
         dialog = showAlertDialog("Exit without saving?",
             isCancelable = true, isCancelableTouchOutside = true, builderFunction = {
                 yesButton {
                     dialog.dismiss()
-                    findNavController().popBackStack()
+                    navigateBack()
                 }
                 noButton {
                     dialog.dismiss()
@@ -75,9 +101,12 @@ class AddFragment : Fragment() {
             })
     }
 
-   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        addPic.onActivityResult(requestCode, resultCode, data)
-    }*/
+    /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+         super.onActivityResult(requestCode, resultCode, data)
+         addPic.onActivityResult(requestCode, resultCode, data)
+     }*/
 
+    fun navigateBack() {
+        findNavController().popBackStack()
+    }
 }
