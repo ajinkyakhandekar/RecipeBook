@@ -11,8 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.tghc.recipebook.R
+import com.tghc.recipebook.constant.MSG_ADD_TITLE
+import com.tghc.recipebook.constant.MSG_EXIT
 import com.tghc.recipebook.constant.MSG_FIREBASE_ERROR
 import com.tghc.recipebook.constant.MSG_RECIPE_SAVED
+import com.tghc.recipebook.data.model.Item
 import com.tghc.recipebook.data.model.Recipe
 import com.tghc.recipebook.data.viewmodel.FirebaseViewModel
 import com.tghc.recipebook.extention.*
@@ -21,15 +24,18 @@ import kotlinx.android.synthetic.main.fragment_add.*
 
 class AddFragment : Fragment() {
 
-    private lateinit var dialog: Dialog
     lateinit var recipe: Recipe
-    var flagEdit = false
+    private lateinit var dialog: Dialog
     private val firebaseViewModel: FirebaseViewModel by viewModels()
     private lateinit var addDet: AddDet
     private lateinit var addIng: AddIng
     private lateinit var addPro: AddPro
     private lateinit var addPic: AddPic
     private lateinit var addSave: AddSave
+    var imageUpload = ArrayList<String>()
+    var flagEdit = false
+    private var count = 0
+    private var item= Item()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         create(R.layout.fragment_add, container)
@@ -37,13 +43,8 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (arguments?.isEmpty!!) {
-            flagEdit = false
-            recipe = Recipe()
-        } else {
-            flagEdit = true
-            recipe = arguments?.getSerializable("recipeData") as Recipe
-        }
+        recipe = arguments?.getSerializable("recipeData") as Recipe
+        flagEdit = recipe.recipeId.isNotEmpty()
 
         addDet = AddDet(this)
         addIng = AddIng(this)
@@ -62,11 +63,14 @@ class AddFragment : Fragment() {
     }
 
     fun saveRecipe() {
-        if (TextUtils.isEmpty(addDet.getTitle())) return
+        if (TextUtils.isEmpty(addDet.getTitle())) {
+            toast(MSG_ADD_TITLE)
+            return
+        }
 
         //recipe.userId = firebaseUser.uid
         recipe.title = addDet.getTitle()
-        recipe.desc = addDet.getDesc()
+        recipe.description = addDet.getDesc()
         recipe.cuisine = addDet.getCuisine()
         recipe.servings = addDet.getServing()
         recipe.type = addDet.getServingType()
@@ -76,20 +80,68 @@ class AddFragment : Fragment() {
 
         recipe.ingredient = addIng.getIngredients()
         recipe.procedure = addPro.getProcedure()
-        recipe.images = addPic.getImages()
+        recipe.imagePath = addPic.getImages()
         recipe.notes = addSave.getNotes()
 
-        firebaseViewModel.postRecipe(recipe).observe(requireActivity(), Observer { baseResponse ->
-            response(baseResponse, {
-                toast(MSG_RECIPE_SAVED)
+        item.chef = recipe.chef
+        item.cuisine = recipe.cuisine
+        item.title = recipe.title
+        item.imagePath = recipe.imagePath
+    }
+
+
+    // save images
+    // save recipe
+    // save item
+    private fun saveData() {
+        if (imageUpload.size > 0) uploadImage(imageUpload[0])
+        else {
+            uploadRecipe()
+        }
+    }
+
+    private fun uploadImage(path: String) {
+        firebaseViewModel.postImage(path).observe(requireActivity(), Observer {
+            it.response({imagePath->
+                recipe.imagePath.add(imagePath)
+
+                count++
+                if (count < imageUpload.size) {
+                    uploadImage(imageUpload[count])
+                }else{
+                    uploadRecipe()
+                }
             }, {
                 toast(MSG_FIREBASE_ERROR)
             })
         })
     }
 
+    private fun uploadRecipe() {
+        firebaseViewModel.postRecipe(recipe).observe(requireActivity(), Observer { baseResponse ->
+            baseResponse.response({recipeId->
+                uploadItem(recipeId)
+            }, {
+                toast(MSG_FIREBASE_ERROR)
+            })
+        })
+    }
+
+    private fun uploadItem(recipeId: String) {
+        item.recipeId = recipeId
+        firebaseViewModel.postItem(item).observe(requireActivity(), Observer { baseResponse ->
+            baseResponse.response({
+                toast(MSG_RECIPE_SAVED)
+                navigateBack()
+            }, {
+                toast(MSG_FIREBASE_ERROR)
+            })
+        })
+    }
+
+
     fun dialogExit() {
-        dialog = showAlertDialog("Exit without saving?",
+        dialog = showAlertDialog(MSG_EXIT,
             isCancelable = true, isCancelableTouchOutside = true, builderFunction = {
                 yesButton {
                     dialog.dismiss()
@@ -101,12 +153,7 @@ class AddFragment : Fragment() {
             })
     }
 
-    /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-         super.onActivityResult(requestCode, resultCode, data)
-         addPic.onActivityResult(requestCode, resultCode, data)
-     }*/
-
-    fun navigateBack() {
+    private fun navigateBack() {
         findNavController().popBackStack()
     }
 }

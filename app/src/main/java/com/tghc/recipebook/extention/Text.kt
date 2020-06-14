@@ -16,22 +16,32 @@ fun View.getString(stringResId: Int): String {
 }
 
 fun EditText.getString(): String {
-    return if (!TextUtils.isEmpty(text.toString())) text.toString().trim()
+    return if (text.toString().isNotEmpty()) text.toString().trim()
     else ""
 }
 
 fun EditText.isEmpty(): Boolean {
-    return (TextUtils.isEmpty(text.toString()))
+    return text.toString().isEmpty()
+}
+
+fun TextView.isEmpty(): Boolean {
+    return text.toString().isEmpty()
 }
 
 fun TextView.getString(): String {
-    return if (!TextUtils.isEmpty(text.toString())) text.toString().trim()
+    return if (text.toString().isNotEmpty()) text.toString().trim()
     else ""
 }
 
 fun TextView.setString(data: String) {
-    text = if (!TextUtils.isEmpty(data)) data
+    text = if (data.isNotEmpty()) data
     else ""
+}
+
+fun TextView.setDisplayText( data: String) {
+    if (!TextUtils.isEmpty(text))
+        text = data
+    else hide()
 }
 
 fun TextView.setHashtag(s:String) {

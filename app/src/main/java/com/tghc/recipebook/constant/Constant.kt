@@ -23,6 +23,9 @@ const val FIELD_TIMESTAMP = "timeStamp"
 
 const val MSG_FIREBASE_ERROR = "An Error Occurred"
 const val MSG_RECIPE_SAVED = "Recipe Saved"
+const val MSG_ADD_TITLE = "Please Enter Title"
+const val MSG_EXIT = "Exit Without Saving?"
+const val MSG_DELETE ="Are you sure you want to delete this Recipe?"
 
 const val flagUpdate = false
 const val details = "Details"

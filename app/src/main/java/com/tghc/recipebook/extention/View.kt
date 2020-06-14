@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.tghc.recipebook.constant.Direction
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
 
@@ -44,8 +45,8 @@ fun <T:Any> View.clickHolder(holder: RecyclerAdapter.ViewHolder<T>, block: (Int)
     setOnClickListener { block(holder.adapterPosition) }
 }
 
-fun inflate1(context:Context, layoutRes: Int):View{
-    return LayoutInflater.from(context).inflate(layoutRes, null, false)
+fun Fragment.inflate1(layoutRes: Int):View{
+    return LayoutInflater.from(requireContext()).inflate(layoutRes, null, false)
 }
 
 /**

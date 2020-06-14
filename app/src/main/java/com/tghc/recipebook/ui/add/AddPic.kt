@@ -35,7 +35,7 @@ class AddPic(private val addFragment: AddFragment) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         uri = ArrayList()
-        for (image in recipe.images) {
+        for (image in recipe.imagePath) {
             uri.add(Uri.parse(image))
         }
 
@@ -72,13 +72,16 @@ class AddPic(private val addFragment: AddFragment) : Fragment() {
     }
 
     fun getImages(): MutableList<String> {
-        return recipe.images
+        return recipe.imagePath
     }
+
+
+    // save file path in recipe.images
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK) {
-            if (data?.clipData == null) {
+            /*if (data?.clipData == null) {
                 val uri = data?.data
                 this.uri.add(uri!!)
                 recipe.images.add(uri.toString())
@@ -88,6 +91,19 @@ class AddPic(private val addFragment: AddFragment) : Fragment() {
                     val uri = data.clipData!!.getItemAt(i).uri
                     this.uri.add(uri)
                     recipe.images.add(uri.toString())
+                }
+            }*/
+
+            if (data?.clipData == null) {
+                val uri = data?.data
+                this.uri.add(uri!!)
+                recipe.imagePath.add(uri.toString())
+            } else {
+                val numberOfImages = data.clipData!!.itemCount
+                for (i in 0 until numberOfImages) {
+                    val uri = data.clipData!!.getItemAt(i).uri
+                    this.uri.add(uri)
+                    recipe.imagePath.add(uri.toString())
                 }
             }
             addPicAdapter.notifyDataSetChanged()

@@ -7,7 +7,7 @@ import com.tghc.recipebook.constant.TAG
 import com.tghc.recipebook.data.response.BaseResponse
 
 fun log(tag: String, message: String) {
-     Log.v(TAG, "$tag : $message")
+    Log.v(TAG, "$tag : $message")
 }
 
 fun log(tag: String, message: Int) {
@@ -40,21 +40,20 @@ inline fun toggleCondition(flag: Boolean, flagTrue: () -> Unit, flagFalse: () ->
     }
 }
 
-fun splitStringToList(input:String?): List<String> {
+fun splitStringToList(input: String?): List<String> {
     return input?.split(",")?.map { it.trim() } ?: ArrayList()
 }
 
-inline fun <T : Any?> response(response: BaseResponse<T>, success: (data: T) -> Unit , fail: (msg: String) ->Unit) {
-    //progressDialog.dismiss()
-    //networkDialog = Visibility.GONE
-    when (response.status) {
+
+fun <T : Any> BaseResponse<T?>.response(success: (data: T) -> Unit, fail:(msg: String) -> Unit) {
+    when (status) {
         Status.SUCCESS -> {
-            response.data?.let {
+            data?.let {
                 success(it)
             }
         }
         Status.ERROR -> {
-            response.error?.let {
+            error?.let {
                 fail(it)
             }
         }
@@ -66,5 +65,4 @@ inline fun <T : Any?> response(response: BaseResponse<T>, success: (data: T) -> 
         }
     }
 }
-
 

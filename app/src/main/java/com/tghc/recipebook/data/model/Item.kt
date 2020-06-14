@@ -11,7 +11,7 @@ data class Item(
     var title: String = "",
     var cuisine: String = "",
     var chef: String = "",
-    var images: MutableList<String> = ArrayList(),
+    var imagePath: MutableList<String> = ArrayList(),
     @ServerTimestamp
     var timestamp: Date = Date()
 )

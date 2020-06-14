@@ -38,7 +38,7 @@ class AddDet(private val addFragment: AddFragment) : Fragment() {
         tagsArray = ArrayList()
 
         edt_title.setText(recipe.title)
-        edt_desc.setText(recipe.desc)
+        edt_desc.setText(recipe.description)
         edt_cuisine.setText(recipe.cuisine)
         edt_servings.setText(recipe.servings)
         edt_serve_type.text = recipe.type
