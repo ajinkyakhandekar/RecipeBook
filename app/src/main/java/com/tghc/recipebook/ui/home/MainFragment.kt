@@ -47,10 +47,10 @@ class MainFragment : Fragment() {
 
         getItemsAPI(page)
 
-        recycler_main.addPagination(isLastPage, isLoading) {
+       /* recycler_main.addPagination(isLastPage, isLoading) {
             isLoading = true
             getItemsAPI(page)
-        }
+        }*/
 
         fab_main.setOnClickListener {
             navigate(MainFragmentDirections.actionMainFragmentToAddFragment(Recipe()))

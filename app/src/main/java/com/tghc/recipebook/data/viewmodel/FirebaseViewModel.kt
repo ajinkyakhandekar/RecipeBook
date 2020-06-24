@@ -1,5 +1,6 @@
 package com.tghc.recipebook.data.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.LiveDataScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
@@ -19,8 +20,8 @@ class FirebaseViewModel : ViewModel() {
         onResponse(this, FirebaseService.getRecipeService(recipeId))
     }
 
-    fun postImage(path:String) =  liveData<BaseResponse<String>>(Dispatchers.IO) {
-        onResponse(this, FirebaseService.postImageService(path))
+    fun postImage(uri: Uri) =  liveData<BaseResponse<String>>(Dispatchers.IO) {
+        onResponse(this, FirebaseService.postImageService(uri))
     }
 
     fun postRecipe(recipe: Recipe) = liveData<BaseResponse<String>>(Dispatchers.IO) {

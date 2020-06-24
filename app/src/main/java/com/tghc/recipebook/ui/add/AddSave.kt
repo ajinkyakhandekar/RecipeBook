@@ -13,11 +13,14 @@ class AddSave(private val addFragment: AddFragment) : Fragment() {
 
     val recipe = addFragment.recipe
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        create(R.layout.add_pro, container)
+        create(R.layout.add_save, container)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        edit_notes.setText(recipe.notes)
+
+       // if (!addFragment.flagEdit) {
+            edit_notes.setText(recipe.notes)
+      //  }
 
 
         text_save.setOnClickListener { addFragment.saveRecipe() }

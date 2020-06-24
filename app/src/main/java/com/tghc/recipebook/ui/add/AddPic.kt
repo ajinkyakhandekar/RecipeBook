@@ -13,10 +13,7 @@ import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
 import com.tghc.recipebook.R
 import com.tghc.recipebook.constant.REQUEST_CODE_IMAGE
-import com.tghc.recipebook.extention.create
-import com.tghc.recipebook.extention.pos
-import com.tghc.recipebook.extention.setGlideImage
-import com.tghc.recipebook.extention.withAdapter
+import com.tghc.recipebook.extention.*
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
 import kotlinx.android.synthetic.main.add_pic.*
 import kotlinx.android.synthetic.main.row_edit_pic.*
@@ -25,8 +22,8 @@ import kotlinx.android.synthetic.main.row_edit_pic.*
 class AddPic(private val addFragment: AddFragment) : Fragment() {
 
     lateinit var addPicAdapter: RecyclerAdapter<Uri>
-    lateinit var uri: MutableList<Uri>
     private val recipe = addFragment.recipe
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         create(R.layout.add_pic, container)
@@ -34,33 +31,28 @@ class AddPic(private val addFragment: AddFragment) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        uri = ArrayList()
         for (image in recipe.imagePath) {
-            uri.add(Uri.parse(image))
+            addFragment.imageUri.add(Uri.parse(image))
         }
 
 
-        addPicAdapter = pic_recycler_view.withAdapter(uri, R.layout.row_edit_pic, { data, position ->
+        addPicAdapter = pic_recycler_view.withAdapter(addFragment.imageUri, R.layout.row_edit_pic, { data, position ->
             image_row_pic.setGlideImage(data, isCenterCrop = true)
         }, {
             image_pic_delete.setOnClickListener {
-                uri.removeAt(pos())
+                addFragment.imageUri.removeAt(pos())
                 addPicAdapter.notifyDataSetChanged()
             }
         })
 
 
         fab_pic.setOnClickListener {
-            val permissions = arrayOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-            Permissions.check(activity, permissions, null, null, object : PermissionHandler() {
-                override fun onGranted() {
-                    imageSelector()
-                }
-            })
+           /* getCameraPermissions({
+                imageSelector()
+            },{
+
+            })*/
+            imageSelector()
         }
     }
 
@@ -96,13 +88,13 @@ class AddPic(private val addFragment: AddFragment) : Fragment() {
 
             if (data?.clipData == null) {
                 val uri = data?.data
-                this.uri.add(uri!!)
+                addFragment.imageUri.add(uri!!)
                 recipe.imagePath.add(uri.toString())
             } else {
                 val numberOfImages = data.clipData!!.itemCount
                 for (i in 0 until numberOfImages) {
                     val uri = data.clipData!!.getItemAt(i).uri
-                    this.uri.add(uri)
+                    addFragment.imageUri.add(uri)
                     recipe.imagePath.add(uri.toString())
                 }
             }

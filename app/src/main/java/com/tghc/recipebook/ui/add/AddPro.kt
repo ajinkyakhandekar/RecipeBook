@@ -10,7 +10,6 @@ import com.tghc.recipebook.constant.SIZE_PRO
 import com.tghc.recipebook.extention.*
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
 import kotlinx.android.synthetic.main.add_pro.*
-import kotlinx.android.synthetic.main.row_edit_ing.*
 import kotlinx.android.synthetic.main.row_edit_pro.*
 import java.util.*
 
@@ -36,7 +35,7 @@ class AddPro(private val addFragment: AddFragment) : Fragment() {
             text_row_pro_count.text = "Step  $pos  :"
             edit_row_pro.setText(pro)
         }, {
-            image_row_ing_delete.setOnClickListener {
+            image_row_pro_delete.setOnClickListener {
                 procedure.removeAt(pos())
                 addProAdapter.notifyItemChanged(pos())
             }

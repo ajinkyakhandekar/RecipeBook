@@ -1,6 +1,7 @@
 package com.tghc.recipebook.ui.add
 
 import android.app.Dialog
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tghc.recipebook.R
 import com.tghc.recipebook.constant.MSG_ADD_TITLE
 import com.tghc.recipebook.constant.MSG_EXIT
@@ -25,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_add.*
 class AddFragment : Fragment() {
 
     lateinit var recipe: Recipe
+    var imageUri = ArrayList<Uri>()
     private lateinit var dialog: Dialog
     private val firebaseViewModel: FirebaseViewModel by viewModels()
     private lateinit var addDet: AddDet
@@ -32,10 +35,9 @@ class AddFragment : Fragment() {
     private lateinit var addPro: AddPro
     private lateinit var addPic: AddPic
     private lateinit var addSave: AddSave
-    var imageUpload = ArrayList<String>()
     var flagEdit = false
     private var count = 0
-    private var item= Item()
+    private var item = Item()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         create(R.layout.fragment_add, container)
@@ -53,9 +55,14 @@ class AddFragment : Fragment() {
         addSave = AddSave(this)
 
         val fragmentList = arrayListOf(addDet, addIng, addPro, addPic, addSave)
+        val fragmentTitle = arrayListOf("Details", "Ingredients", "Procedure", "Images", "Save")
         val addPagerAdapter = AddPagerAdapter(requireActivity(), fragmentList)
         viewpager_add.adapter = addPagerAdapter
         viewpager_add.offscreenPageLimit = 4
+
+        TabLayoutMediator(tabs_add, viewpager_add) { tab, position ->
+            tab.text = fragmentTitle[position]
+        }.attach()
 
         fragmentBackPressed {
             dialogExit()
@@ -80,13 +87,15 @@ class AddFragment : Fragment() {
 
         recipe.ingredient = addIng.getIngredients()
         recipe.procedure = addPro.getProcedure()
-        recipe.imagePath = addPic.getImages()
+        //recipe.imagePath = addPic.getImages()
         recipe.notes = addSave.getNotes()
 
         item.chef = recipe.chef
         item.cuisine = recipe.cuisine
         item.title = recipe.title
         item.imagePath = recipe.imagePath
+
+        saveData()
     }
 
 
@@ -94,23 +103,24 @@ class AddFragment : Fragment() {
     // save recipe
     // save item
     private fun saveData() {
-        if (imageUpload.size > 0) uploadImage(imageUpload[0])
-        else {
-            uploadRecipe()
-        }
+        count=0
+
+        if (imageUri.size > 0) uploadImage(imageUri[0])
+        else uploadRecipe()
+
     }
 
-    private fun uploadImage(path: String) {
-        firebaseViewModel.postImage(path).observe(requireActivity(), Observer {
-            it.response({imagePath->
-                recipe.imagePath.add(imagePath)
+    private fun uploadImage(uri: Uri) {
+        firebaseViewModel.postImage(uri).observe(requireActivity(), Observer {
+            it.response({ imagePath ->
+                 recipe.imagePath.add(imagePath)
 
-                count++
-                if (count < imageUpload.size) {
-                    uploadImage(imageUpload[count])
-                }else{
-                    uploadRecipe()
-                }
+                 count++
+                 if (count < imageUri.size) {
+                     uploadImage(imageUri[count])
+                 }else{
+                     uploadRecipe()
+                 }
             }, {
                 toast(MSG_FIREBASE_ERROR)
             })
@@ -119,7 +129,7 @@ class AddFragment : Fragment() {
 
     private fun uploadRecipe() {
         firebaseViewModel.postRecipe(recipe).observe(requireActivity(), Observer { baseResponse ->
-            baseResponse.response({recipeId->
+            baseResponse.response({ recipeId ->
                 uploadItem(recipeId)
             }, {
                 toast(MSG_FIREBASE_ERROR)

@@ -51,8 +51,7 @@ class AddDet(private val addFragment: AddFragment) : Fragment() {
         flexBoxLayoutManager.flexDirection = FlexDirection.ROW
         flexBoxLayoutManager.justifyContent = JustifyContent.FLEX_START
         recycler_tag.layoutManager = flexBoxLayoutManager
-        recycler_tag.withAdapter(tagsArray, R.layout.row_tag,{tag, position ->
-
+        tagAdapter = recycler_tag.withAdapter(tagsArray, R.layout.row_tag,{tag, position ->
             text_tag.text = tag
         },{
             image_tag_delete.setOnClickListener {

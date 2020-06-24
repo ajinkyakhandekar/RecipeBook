@@ -37,7 +37,7 @@ const val pTime = "Preparation Time"
 const val cTime = "Cooking Time"
 const val images = "Images"
 const val save = "Save"
-const val REQUEST_CODE_IMAGE = 500
+const val REQUEST_CODE_IMAGE = 550
 const val PICK_IMAGE_REQUEST = 300
 
 

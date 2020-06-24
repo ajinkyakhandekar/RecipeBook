@@ -7,7 +7,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.tghc.recipebook.data.model.Item
 import com.tghc.recipebook.data.model.Recipe
 import kotlinx.coroutines.tasks.await
-import java.io.File
 
 
 object FirebaseService {
@@ -22,9 +21,9 @@ object FirebaseService {
 
     suspend fun getItemListService(page: Int): MutableList<Item> {
         return db.collection(collection_item)
-//           .orderBy(timestamp)
-//           .startAfter(page * pageSize)
-//           .limit(pageSize)
+            .orderBy(timestamp)
+            .startAfter(page * pageSize)
+            .limit(pageSize)
             .get().await().toObjects(Item::class.java)
     }
 
@@ -32,12 +31,28 @@ object FirebaseService {
         return db.collection(collection_recipe).document(recipeId).get().await().toObject(Recipe::class.java)
     }
 
-    suspend fun postImageService(path:String): String {
-        val file = Uri.fromFile(File(path))
-        val storageReference = storage.reference.child("images/${file.lastPathSegment}")
-        storageReference.putFile(file).await()
+    suspend fun postImageService(uri: Uri): String {
+        var storagePath: Uri? = null
 
-        return storageReference.downloadUrl.toString()
+        val storageReference = storage.reference.child("images/${uri.lastPathSegment}")
+        storageReference.putFile(uri)
+            .continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                storageReference.downloadUrl
+            }
+            .addOnCompleteListener { task1 ->
+                if (task1.isSuccessful) {
+                    storagePath = task1.result
+                } else {
+
+                }
+            }.await()
+
+        return storagePath.toString()
     }
 
     suspend fun postRecipeService(recipe: Recipe): String {
@@ -49,11 +64,11 @@ object FirebaseService {
         return true
     }
 
-    suspend fun deleteRecipeService(itemId:String, recipeId: String):Boolean{
+    suspend fun deleteRecipeService(itemId: String, recipeId: String): Boolean {
         val recipe = db.collection(collection_recipe).document(recipeId)
         val item = db.collection(collection_item).document(itemId)
 
-        db.runBatch {batch->
+        db.runBatch { batch ->
             batch.delete(recipe)
             batch.delete(item)
         }.await()
