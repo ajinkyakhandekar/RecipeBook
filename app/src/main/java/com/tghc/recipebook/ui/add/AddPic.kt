@@ -1,32 +1,25 @@
 package com.tghc.recipebook.ui.add
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.nabinbhandari.android.permissions.PermissionHandler
-import com.nabinbhandari.android.permissions.Permissions
-import com.tghc.recipebook.R
 import com.tghc.recipebook.constant.REQUEST_CODE_IMAGE
-import com.tghc.recipebook.extention.*
+import com.tghc.recipebook.databinding.AddPicBinding
+import com.tghc.recipebook.databinding.RowEditPicBinding
+import com.tghc.recipebook.extention.setGlideImage
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
-import kotlinx.android.synthetic.main.add_pic.*
-import kotlinx.android.synthetic.main.row_edit_pic.*
+import com.tghc.recipebook.ui.adapter.withAdapter
+import com.tghc.recipebook.ui.base.BaseFragment
 
 
-class AddPic(private val addFragment: AddFragment) : Fragment() {
+class AddPic(private val addFragment: AddFragment) : BaseFragment<AddPicBinding>(
+    AddPicBinding::inflate
+) {
 
-    lateinit var addPicAdapter: RecyclerAdapter<Uri>
+    private lateinit var addPicAdapter: RecyclerAdapter<Uri, RowEditPicBinding>
     private val recipe = addFragment.recipe
-
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        create(R.layout.add_pic, container)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,23 +28,24 @@ class AddPic(private val addFragment: AddFragment) : Fragment() {
             addFragment.imageUri.add(Uri.parse(image))
         }
 
+        addPicAdapter = binding.picRecyclerView.withAdapter(RowEditPicBinding::inflate) { data, _ ->
+            binding.imageRowPic.setGlideImage(data, isCenterCrop = true)
+        }
 
-        addPicAdapter = pic_recycler_view.withAdapter(addFragment.imageUri, R.layout.row_edit_pic, { data, position ->
-            image_row_pic.setGlideImage(data, isCenterCrop = true)
-        }, {
-            image_pic_delete.setOnClickListener {
-                addFragment.imageUri.removeAt(pos())
-                addPicAdapter.notifyDataSetChanged()
+        addPicAdapter.setClickListeners = {
+            binding.imagePicDelete.setOnClickListener {
+                addFragment.imageUri.removeAt(adapterPosition)
+                addPicAdapter.updateData(addFragment.imageUri)
             }
-        })
+        }
 
 
-        fab_pic.setOnClickListener {
-           /* getCameraPermissions({
-                imageSelector()
-            },{
+        binding.fabPic.setOnClickListener {
+            /* getCameraPermissions({
+                 imageSelector()
+             },{
 
-            })*/
+             })*/
             imageSelector()
         }
     }

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background1">
@@ -17,7 +15,7 @@
         android:layout_marginEnd="44dp"
         android:text="@string/notes_tips"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edit_notes"
@@ -31,7 +29,7 @@
         android:minLines="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/textView9"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
 
     <TextView
@@ -39,26 +37,26 @@
         style="@style/text_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
         android:paddingStart="@dimen/margin_large"
         android:paddingEnd="@dimen/margin_large"
-        android:layout_marginTop="36dp"
         android:text="  Save  "
         app:layout_constraintEnd_toStartOf="@id/text_cancel"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_notes"/>
+        app:layout_constraintTop_toBottomOf="@+id/edit_notes" />
 
     <TextView
         android:id="@+id/text_cancel"
         style="@style/text_button"
         android:layout_width="wrap_content"
-        android:paddingStart="@dimen/margin_large"
-        android:paddingEnd="@dimen/margin_large"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
+        android:paddingStart="@dimen/margin_large"
+        android:paddingEnd="@dimen/margin_large"
         android:text="@string/cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/text_save"
-        app:layout_constraintTop_toBottomOf="@+id/edit_notes"/>
+        app:layout_constraintTop_toBottomOf="@+id/edit_notes" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

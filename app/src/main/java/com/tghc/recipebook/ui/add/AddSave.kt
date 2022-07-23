@@ -1,33 +1,28 @@
 package com.tghc.recipebook.ui.add
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.tghc.recipebook.R
-import com.tghc.recipebook.extention.create
-import kotlinx.android.synthetic.main.add_save.*
+import com.tghc.recipebook.databinding.AddSaveBinding
+import com.tghc.recipebook.ui.base.BaseFragment
 
-class AddSave(private val addFragment: AddFragment) : Fragment() {
-
+class AddSave(private val addFragment: AddFragment) : BaseFragment<AddSaveBinding>(
+    AddSaveBinding::inflate
+) {
     val recipe = addFragment.recipe
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        create(R.layout.add_save, container)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       // if (!addFragment.flagEdit) {
-            edit_notes.setText(recipe.notes)
-      //  }
+        // if (!addFragment.flagEdit) {
+        binding.editNotes.setText(recipe.notes)
+        //  }
 
 
-        text_save.setOnClickListener { addFragment.saveRecipe() }
-        text_cancel.setOnClickListener { addFragment.dialogExit() }
+        binding.textSave.setOnClickListener { addFragment.saveRecipe() }
+        binding.textCancel.setOnClickListener { addFragment.dialogExit() }
     }
 
     fun getNotes(): String {
-        return edit_notes.text.toString()
+        return binding.editNotes.text.toString()
     }
 }

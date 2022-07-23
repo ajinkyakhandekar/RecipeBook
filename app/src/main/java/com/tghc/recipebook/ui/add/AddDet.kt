@@ -4,76 +4,84 @@ import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.tghc.recipebook.R
 import com.tghc.recipebook.constant.SERVE_TYPE
-import com.tghc.recipebook.extention.create
+import com.tghc.recipebook.databinding.AddDtBinding
+import com.tghc.recipebook.databinding.RowTagBinding
 import com.tghc.recipebook.extention.getString
-import com.tghc.recipebook.extention.pos
-import com.tghc.recipebook.extention.withAdapter
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
-import kotlinx.android.synthetic.main.add_dt.*
-import kotlinx.android.synthetic.main.row_tag.*
+import com.tghc.recipebook.ui.adapter.withAdapter
+import com.tghc.recipebook.ui.base.BaseFragment
 import java.util.*
-import kotlin.collections.ArrayList
 
-class AddDet(private val addFragment: AddFragment) : Fragment() {
+class AddDet(addFragment: AddFragment) : BaseFragment<AddDtBinding>(
+    AddDtBinding::inflate
+) {
 
-    lateinit var tagAdapter: RecyclerAdapter<String>
+    private lateinit var tagAdapter: RecyclerAdapter<String, RowTagBinding>
     lateinit var tagsArray: MutableList<String>
-    val recipe = addFragment.recipe
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        create(R.layout.add_dt, container)
+    private val recipe = addFragment.recipe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tagsArray = ArrayList()
 
-        edt_title.setText(recipe.title)
-        edt_desc.setText(recipe.description)
-        edt_cuisine.setText(recipe.cuisine)
-        edt_servings.setText(recipe.servings)
-        edt_serve_type.text = recipe.type
-        edt_prep_time.text = recipe.pTime
-        edt_cook_time.text = recipe.cTime
+        binding.edtTitle.setText(recipe.title)
+        binding.edtDesc.setText(recipe.description)
+        binding.edtCuisine.setText(recipe.cuisine)
+        binding.edtServings.setText(recipe.servings)
+        binding.edtServeType.text = recipe.type
+        binding.edtPrepTime.text = recipe.pTime
+        binding.edtCookTime.text = recipe.cTime
         tagsArray = recipe.tags
 
         //tags
         val flexBoxLayoutManager = FlexboxLayoutManager(requireActivity())
         flexBoxLayoutManager.flexDirection = FlexDirection.ROW
         flexBoxLayoutManager.justifyContent = JustifyContent.FLEX_START
-        recycler_tag.layoutManager = flexBoxLayoutManager
-        tagAdapter = recycler_tag.withAdapter(tagsArray, R.layout.row_tag,{tag, position ->
+        binding.recyclerTag.layoutManager = flexBoxLayoutManager
+
+        tagAdapter = binding.recyclerTag.withAdapter(RowTagBinding::inflate) { tag, _ ->
+            binding.textTag.text = tag
+        }
+
+        tagAdapter.setClickListeners = {
+            binding.imageTagDelete.setOnClickListener {
+                tagsArray.removeAt(adapterPosition)
+                tagAdapter.updateData(tagsArray)
+            }
+        }
+
+
+        /*(tagsArray, R.layout.row_tag, { tag, position ->
             text_tag.text = tag
-        },{
+        }, {
             image_tag_delete.setOnClickListener {
                 tagsArray.removeAt(pos())
-                tagAdapter.notifyDataSetChanged() }
-        })
-
-        image_tag_add.setOnClickListener {
-            if (!TextUtils.isEmpty(edt_tags.getString())) {
-                tagsArray.add(edt_tags.getString())
                 tagAdapter.notifyDataSetChanged()
-                edt_tags.setText("")
+            }
+        })*/
+
+        binding.imageTagAdd.setOnClickListener {
+            if (!TextUtils.isEmpty(binding.edtTags.getString())) {
+                tagsArray.add(binding.edtTags.getString())
+                tagAdapter.updateData(tagsArray)
+                binding.edtTags.setText("")
             }
         }
 
 
         //pTime
         val pTimeSetListener = OnTimeSetListener { _, hourOfDay, minute ->
-            edt_prep_time.text = getTimer(hourOfDay, minute)
+            binding.edtPrepTime.text = getTimer(hourOfDay, minute)
         }
 
-        edt_prep_time.setOnClickListener {
+        binding.edtPrepTime.setOnClickListener {
             val mTimePickerDialog = TimePickerDialog(
                 activity,
                 R.style.DialogTheme,
@@ -85,10 +93,10 @@ class AddDet(private val addFragment: AddFragment) : Fragment() {
 
         //cTime
         val cTimeSetListener = OnTimeSetListener { _, hourOfDay, minute ->
-            edt_cook_time.text = getTimer(hourOfDay, minute)
+            binding.edtCookTime.text = getTimer(hourOfDay, minute)
         }
 
-        edt_cook_time.setOnClickListener {
+        binding.edtCookTime.setOnClickListener {
             val mTimePickerDialog = TimePickerDialog(
                 requireActivity(),
                 R.style.DialogTheme,
@@ -99,17 +107,17 @@ class AddDet(private val addFragment: AddFragment) : Fragment() {
         }
 
         //Serving
-        edt_serve_type.setOnClickListener {
+        binding.edtServeType.setOnClickListener {
             val builder = AlertDialog.Builder(requireActivity())
             builder.setItems(SERVE_TYPE) { dialog, item ->
-                edt_serve_type.text = SERVE_TYPE[item]
+                binding.edtServeType.text = SERVE_TYPE[item]
                 dialog.dismiss()
             }
             builder.show()
         }
     }
 
-    private fun getTimer(hourOfDay: Int, minute: Int): String? {
+    private fun getTimer(hourOfDay: Int, minute: Int): String {
         return when {
             hourOfDay == 0 -> {
                 String.format(Locale.US, "%02d", minute) + " min"
@@ -118,36 +126,40 @@ class AddDet(private val addFragment: AddFragment) : Fragment() {
                 String.format(Locale.US, "%02d", hourOfDay) + " hr"
             }
             else -> {
-                String.format(Locale.US, "%02d", hourOfDay) + " hr  " + String.format(Locale.US, "%02d", minute) + " min"
+                String.format(Locale.US, "%02d", hourOfDay) + " hr  " + String.format(
+                    Locale.US,
+                    "%02d",
+                    minute
+                ) + " min"
             }
         }
     }
 
     fun getTitle(): String {
-        return edt_title.text.toString()
+        return binding.edtTitle.text.toString()
     }
 
     fun getDesc(): String {
-        return edt_desc.text.toString()
+        return binding.edtDesc.text.toString()
     }
 
     fun getCuisine(): String {
-        return edt_cuisine.text.toString()
+        return binding.edtCuisine.text.toString()
     }
 
     fun getPTime(): String {
-        return edt_prep_time.text.toString()
+        return binding.edtPrepTime.text.toString()
     }
 
     fun getCTime(): String {
-        return edt_cook_time.text.toString()
+        return binding.edtCookTime.text.toString()
     }
 
     fun getServing(): String {
-        return edt_servings.text.toString()
+        return binding.edtServings.text.toString()
     }
 
     fun getServingType(): String {
-        return edt_serve_type.text.toString()
+        return binding.edtServeType.text.toString()
     }
 }

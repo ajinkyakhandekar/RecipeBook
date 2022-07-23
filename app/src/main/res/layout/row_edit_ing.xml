@@ -23,9 +23,9 @@
         android:background="@drawable/rect_stroke"
         android:inputType="textCapSentences"
         android:maxLength="25"
+        android:nextFocusRight="@+id/edit_row_ing_num"
         android:padding="@dimen/padding_small"
         android:textColor="@color/text1"
-        android:nextFocusRight="@+id/edit_row_ing_num"
         android:textSize="@dimen/text_medium" />
 
     <EditText

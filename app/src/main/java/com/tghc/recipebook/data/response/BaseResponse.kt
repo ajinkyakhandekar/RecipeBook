@@ -11,7 +11,7 @@ data class BaseResponse<out T>(val status: Status, val data: T?, val error: Stri
 
     companion object {
         fun <T> success(data: T?): BaseResponse<T> {
-            log("response rrr", data.toString())
+            log("response recipe", data.toString())
             return BaseResponse(Status.SUCCESS, data, null)
         }
 
@@ -29,7 +29,8 @@ data class BaseResponse<out T>(val status: Status, val data: T?, val error: Stri
     }
 
     private fun isOnline(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         val capabilities = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)

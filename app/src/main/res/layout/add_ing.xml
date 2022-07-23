@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background1">
 
-
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/in_recycler_view"
         android:layout_width="match_parent"
-        android:paddingTop="@dimen/app_padding"
-        android:paddingBottom="@dimen/app_padding"
-        android:paddingStart="@dimen/app_padding_half"
-        android:paddingEnd="@dimen/app_padding_half"
-        android:clipToPadding="false"
-        android:background="@color/background1"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_height="match_parent"
-        android:id="@+id/in_recycler_view"/>
+        android:background="@color/background1"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/app_padding_half"
+        android:paddingTop="@dimen/app_padding"
+        android:paddingEnd="@dimen/app_padding_half"
+        android:paddingBottom="@dimen/app_padding"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_ing"
@@ -25,6 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add"/>
+        android:src="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

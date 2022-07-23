@@ -1,0 +1,7 @@
+
+
+1. Pass Recipie in argument to DetailsFragment
+2. Tags not visible
+3. Ing Row items clipped
+4. Image Loading
+5.

@@ -2,6 +2,7 @@ package com.tghc.recipebook.extention
 
 import android.os.Handler
 import android.util.Log
+import com.google.gson.Gson
 import com.tghc.recipebook.constant.Status
 import com.tghc.recipebook.constant.TAG
 import com.tghc.recipebook.data.response.BaseResponse
@@ -13,6 +14,13 @@ fun log(tag: String, message: String) {
 fun log(tag: String, message: Int) {
     Log.v(TAG, "$tag : $message")
 }
+
+val Any.jsonString: String
+    get() = try {
+        Gson().toJson(this)
+    } catch (e: Exception) {
+        ""
+    }
 
 fun runDelayed(delay: Long, action: () -> Unit) {
     Handler().postDelayed(action, delay)

@@ -7,15 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.tghc.recipebook.R
+import com.tghc.recipebook.databinding.FragmentDetailBinding
+import com.tghc.recipebook.databinding.FragmentMediaBinding
 import com.tghc.recipebook.extention.create
+import com.tghc.recipebook.ui.base.BaseFragment
 
-/**
- * A simple [Fragment] subclass.
- */
-class MediaFragment : Fragment() {
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        create(R.layout.fragment_media, container)
+class MediaFragment : BaseFragment<FragmentMediaBinding>(
+    FragmentMediaBinding::inflate
+) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

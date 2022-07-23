@@ -1,54 +1,55 @@
 package com.tghc.recipebook.ui.add
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.tghc.recipebook.R
 import com.tghc.recipebook.constant.SIZE_PRO
-import com.tghc.recipebook.extention.*
+import com.tghc.recipebook.databinding.AddProBinding
+import com.tghc.recipebook.databinding.RowEditProBinding
+import com.tghc.recipebook.extention.getString
+import com.tghc.recipebook.extention.isEmpty
+import com.tghc.recipebook.extention.textWatcher
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
-import kotlinx.android.synthetic.main.add_pro.*
-import kotlinx.android.synthetic.main.row_edit_pro.*
-import java.util.*
+import com.tghc.recipebook.ui.adapter.withAdapter
+import com.tghc.recipebook.ui.base.BaseFragment
 
-class AddPro(private val addFragment: AddFragment) : Fragment() {
+class AddPro(private val addFragment: AddFragment) : BaseFragment<AddProBinding>(
+    AddProBinding::inflate
+) {
 
-    private lateinit var addProAdapter: RecyclerAdapter<String>
+    private lateinit var addProAdapter: RecyclerAdapter<String, RowEditProBinding>
     private val procedure = addFragment.recipe.procedure
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        create(R.layout.add_pro, container)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-         if (!addFragment.flagEdit) {
-             for (i in 0 until SIZE_PRO) {
-                 procedure.add("")
-             }
-         }
+        if (!addFragment.flagEdit) {
+            for (i in 0 until SIZE_PRO) {
+                procedure.add("")
+            }
+        }
 
-        addProAdapter = pro_recycler_view.withAdapter(procedure, R.layout.row_edit_pro, { pro, position ->
-            val pos = position + 1
-            text_row_pro_count.text = "Step  $pos  :"
-            edit_row_pro.setText(pro)
-        }, {
-            image_row_pro_delete.setOnClickListener {
-                procedure.removeAt(pos())
-                addProAdapter.notifyItemChanged(pos())
+        addProAdapter =
+            binding.proRecyclerView.withAdapter(RowEditProBinding::inflate) { pro, itemDetails ->
+                val pos = itemDetails.position + 1
+                binding.textRowProCount.text = "Step  $pos  :"
+                binding.editRowPro.setText(pro)
             }
 
-            edit_row_pro.textWatcher {
-                procedure[pos()] = edit_row_pro.getString()
+        addProAdapter.setClickListeners = {
+            binding.imageRowProDelete.setOnClickListener {
+                procedure.removeAt(adapterPosition)
+                addProAdapter.updateData(procedure)
             }
-        })
+
+            binding.editRowPro.textWatcher {
+                procedure[adapterPosition] = binding.editRowPro.getString()
+            }
+        }
 
 
-        fab_pro.setOnClickListener {
+        binding.fabPro.setOnClickListener {
             procedure.add("")
-            addProAdapter.notifyDataSetChanged()
+            addProAdapter.updateData(procedure)
         }
     }
 

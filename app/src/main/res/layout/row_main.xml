@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/app_padding_half"
+    android:id="@+id/relative_row_main"
     android:layout_marginEnd="@dimen/app_padding_half"
     android:layout_marginBottom="@dimen/app_padding_half">
 

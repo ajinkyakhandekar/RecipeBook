@@ -1,14 +1,8 @@
 package com.tghc.recipebook.ui.activity
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.tghc.recipebook.R
+import com.tghc.recipebook.databinding.ActivityHomeBinding
+import com.tghc.recipebook.ui.base.BaseActivity
 
-class HomeActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
-    }
-}
+class HomeActivity : BaseActivity<ActivityHomeBinding>(
+    ActivityHomeBinding::inflate
+)

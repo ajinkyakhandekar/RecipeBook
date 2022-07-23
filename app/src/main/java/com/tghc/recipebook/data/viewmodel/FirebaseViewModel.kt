@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveDataScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.tghc.recipebook.data.model.Item
+import com.google.firebase.firestore.FirebaseFirestore
 import com.tghc.recipebook.data.model.Recipe
 import com.tghc.recipebook.data.response.BaseResponse
 import com.tghc.recipebook.data.service.FirebaseService
@@ -12,29 +12,34 @@ import kotlinx.coroutines.Dispatchers
 
 class FirebaseViewModel : ViewModel() {
 
-    fun getItemList(page: Int) = liveData<BaseResponse<MutableList<Item>>>(Dispatchers.IO) {
-        onResponse(this, FirebaseService.getItemListService(page))
-    }
+    fun getRecipeList(db: FirebaseFirestore, page: Int) =
+        liveData<BaseResponse<MutableList<Recipe>>>(Dispatchers.IO) {
+            onResponse(this, FirebaseService.getRecipeListService(db, page))
+        }
 
-    fun getRecipe(recipeId: String) = liveData<BaseResponse<Recipe?>>(Dispatchers.IO) {
-        onResponse(this, FirebaseService.getRecipeService(recipeId))
-    }
+    fun getRecipe(db: FirebaseFirestore, recipeId: String) =
+        liveData<BaseResponse<Recipe?>>(Dispatchers.IO) {
+            onResponse(this, FirebaseService.getRecipeService(db, recipeId))
+        }
 
-    fun postImage(uri: Uri) =  liveData<BaseResponse<String>>(Dispatchers.IO) {
+    fun postImage(uri: Uri) = liveData<BaseResponse<String>>(Dispatchers.IO) {
         onResponse(this, FirebaseService.postImageService(uri))
     }
 
-    fun postRecipe(recipe: Recipe) = liveData<BaseResponse<String>>(Dispatchers.IO) {
-        onResponse(this, FirebaseService.postRecipeService(recipe))
-    }
+    fun postRecipe(db: FirebaseFirestore, recipe: Recipe) =
+        liveData<BaseResponse<String>>(Dispatchers.IO) {
+            onResponse(this, FirebaseService.postRecipeService(db, recipe))
+        }
 
-    fun postItem(item: Item) = liveData<BaseResponse<Boolean>>(Dispatchers.IO) {
-        onResponse(this, FirebaseService.postItemService(item))
-    }
+    fun postRecipeList(db: FirebaseFirestore, recipeList: MutableList<Recipe>) =
+        liveData<BaseResponse<String>>(Dispatchers.IO) {
+            onResponse(this, FirebaseService.postRecipeListService(db, recipeList))
+        }
 
-    fun deleteRecipe(itemId: String, recipeId: String) = liveData<BaseResponse<Boolean>>(Dispatchers.IO) {
-        onResponse(this, FirebaseService.deleteRecipeService(itemId, recipeId))
-    }
+    fun deleteRecipe(db: FirebaseFirestore, recipeId: String) =
+        liveData<BaseResponse<Boolean>>(Dispatchers.IO) {
+            onResponse(this, FirebaseService.deleteRecipeService(db, recipeId))
+        }
 
 
     private suspend fun <T> onResponse(liveDataScope: LiveDataScope<BaseResponse<T>>, response: T) {

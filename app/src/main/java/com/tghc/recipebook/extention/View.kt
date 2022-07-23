@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import com.tghc.recipebook.constant.Direction
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
 
@@ -29,20 +30,12 @@ fun View.disable() {
 }
 
 fun View.toggleVisibility(): View {
-    if (visibility == View.VISIBLE) {
-        visibility = View.INVISIBLE
+    visibility = if (visibility == View.VISIBLE) {
+        View.INVISIBLE
     } else {
-        visibility = View.INVISIBLE
+        View.INVISIBLE
     }
     return this
-}
-
-fun <T : View> T.click(block: (T) -> Unit) {
-    setOnClickListener { block(it as T) }
-}
-
-fun <T:Any> View.clickHolder(holder: RecyclerAdapter.ViewHolder<T>, block: (Int) -> Unit) {
-    setOnClickListener { block(holder.adapterPosition) }
 }
 
 fun Fragment.inflate1(layoutRes: Int):View{

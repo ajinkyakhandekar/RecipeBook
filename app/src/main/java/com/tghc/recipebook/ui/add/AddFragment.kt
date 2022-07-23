@@ -4,28 +4,26 @@ import android.app.Dialog
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
-import com.tghc.recipebook.R
+import com.google.firebase.firestore.FirebaseFirestore
 import com.tghc.recipebook.constant.MSG_ADD_TITLE
 import com.tghc.recipebook.constant.MSG_EXIT
 import com.tghc.recipebook.constant.MSG_FIREBASE_ERROR
 import com.tghc.recipebook.constant.MSG_RECIPE_SAVED
-import com.tghc.recipebook.data.model.Item
 import com.tghc.recipebook.data.model.Recipe
 import com.tghc.recipebook.data.viewmodel.FirebaseViewModel
+import com.tghc.recipebook.databinding.FragmentAddBinding
 import com.tghc.recipebook.extention.*
 import com.tghc.recipebook.ui.adapter.AddPagerAdapter
-import kotlinx.android.synthetic.main.fragment_add.*
+import com.tghc.recipebook.ui.base.BaseFragment
 
-class AddFragment : Fragment() {
-
+class AddFragment : BaseFragment<FragmentAddBinding>(
+    FragmentAddBinding::inflate
+) {
     lateinit var recipe: Recipe
     var imageUri = ArrayList<Uri>()
     private lateinit var dialog: Dialog
@@ -37,10 +35,6 @@ class AddFragment : Fragment() {
     private lateinit var addSave: AddSave
     var flagEdit = false
     private var count = 0
-    private var item = Item()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        create(R.layout.fragment_add, container)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,13 +48,13 @@ class AddFragment : Fragment() {
         addPic = AddPic(this)
         addSave = AddSave(this)
 
-        val fragmentList = arrayListOf(addDet, addIng, addPro, addPic, addSave)
+        val fragmentList = arrayListOf<Fragment>(addDet, addIng, addPro, addPic, addSave)
         val fragmentTitle = arrayListOf("Details", "Ingredients", "Procedure", "Images", "Save")
         val addPagerAdapter = AddPagerAdapter(requireActivity(), fragmentList)
-        viewpager_add.adapter = addPagerAdapter
-        viewpager_add.offscreenPageLimit = 4
+        binding.viewpagerAdd.adapter = addPagerAdapter
+        binding.viewpagerAdd.offscreenPageLimit = 4
 
-        TabLayoutMediator(tabs_add, viewpager_add) { tab, position ->
+        TabLayoutMediator(binding.tabsAdd, binding.viewpagerAdd) { tab, position ->
             tab.text = fragmentTitle[position]
         }.attach()
 
@@ -90,11 +84,6 @@ class AddFragment : Fragment() {
         //recipe.imagePath = addPic.getImages()
         recipe.notes = addSave.getNotes()
 
-        item.chef = recipe.chef
-        item.cuisine = recipe.cuisine
-        item.title = recipe.title
-        item.imagePath = recipe.imagePath
-
         saveData()
     }
 
@@ -103,7 +92,7 @@ class AddFragment : Fragment() {
     // save recipe
     // save item
     private fun saveData() {
-        count=0
+        count = 0
 
         if (imageUri.size > 0) uploadImage(imageUri[0])
         else uploadRecipe()
@@ -111,42 +100,32 @@ class AddFragment : Fragment() {
     }
 
     private fun uploadImage(uri: Uri) {
-        firebaseViewModel.postImage(uri).observe(requireActivity(), Observer {
+        firebaseViewModel.postImage(uri).observe(requireActivity()) {
             it.response({ imagePath ->
-                 recipe.imagePath.add(imagePath)
+                recipe.imagePath.add(imagePath)
 
-                 count++
-                 if (count < imageUri.size) {
-                     uploadImage(imageUri[count])
-                 }else{
-                     uploadRecipe()
-                 }
+                count++
+                if (count < imageUri.size) {
+                    uploadImage(imageUri[count])
+                } else {
+                    uploadRecipe()
+                }
             }, {
                 toast(MSG_FIREBASE_ERROR)
             })
-        })
+        }
     }
 
     private fun uploadRecipe() {
-        firebaseViewModel.postRecipe(recipe).observe(requireActivity(), Observer { baseResponse ->
-            baseResponse.response({ recipeId ->
-                uploadItem(recipeId)
-            }, {
-                toast(MSG_FIREBASE_ERROR)
-            })
-        })
-    }
-
-    private fun uploadItem(recipeId: String) {
-        item.recipeId = recipeId
-        firebaseViewModel.postItem(item).observe(requireActivity(), Observer { baseResponse ->
-            baseResponse.response({
-                toast(MSG_RECIPE_SAVED)
-                navigateBack()
-            }, {
-                toast(MSG_FIREBASE_ERROR)
-            })
-        })
+        firebaseViewModel.postRecipe(FirebaseFirestore.getInstance(), recipe)
+            .observe(requireActivity()) { baseResponse ->
+                baseResponse.response({ recipeId ->
+                    toast(MSG_RECIPE_SAVED)
+                    navigateBack()
+                }, {
+                    toast(MSG_FIREBASE_ERROR)
+                })
+            }
     }
 
 

@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingTop="@dimen/padding_small"
     android:paddingStart="@dimen/app_padding_half"
+    android:paddingTop="@dimen/padding_small"
     android:paddingEnd="@dimen/app_padding_half"
     android:weightSum="8">
 
@@ -12,16 +12,16 @@
         android:id="@+id/text_display_details"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="3"
         android:textColor="@color/text1"
-        android:textSize="@dimen/text_small"
-        android:layout_weight="3"/>
+        android:textSize="@dimen/text_small" />
 
     <TextView
         android:id="@+id/text_display_details_name"
         android:layout_width="0dp"
-        android:layout_weight="5"
         android:layout_height="wrap_content"
+        android:layout_weight="5"
         android:textColor="@color/text1"
-        android:textSize="@dimen/text_small"/>
+        android:textSize="@dimen/text_small" />
 
 </LinearLayout>

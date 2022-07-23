@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/navigation_home"
-            app:startDestination="@id/mainFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_home"
+    app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/mainFragment"
@@ -12,12 +12,11 @@
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_addFragment"
-            app:destination="@id/addFragment"
-            />
+            app:destination="@id/addFragment" />
         <action
             android:id="@+id/action_mainFragment_to_detailFragment"
             app:destination="@id/detailFragment"
-            app:popUpTo="@id/mainFragment"/>
+            app:popUpTo="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/addFragment"
@@ -25,7 +24,7 @@
         android:label="AddFragment">
         <argument
             android:name="recipeData"
-            app:argType="com.tghc.recipebook.data.model.Recipe"/>
+            app:argType="com.tghc.recipebook.data.model.Recipe" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -34,17 +33,16 @@
         <action
             android:id="@+id/action_detailFragment_to_mediaFragment"
             app:destination="@id/mediaFragment"
-            app:popUpTo="@id/detailFragment"/>
+            app:popUpTo="@id/detailFragment" />
         <action
             android:id="@+id/action_detailFragment_to_addFragment"
-            app:destination="@id/addFragment"
-            />
+            app:destination="@id/addFragment" />
         <argument
             android:name="recipeId"
-            app:argType="string"/>
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/mediaFragment"
         android:name="com.tghc.recipebook.ui.detail.MediaFragment"
-        android:label="MediaFragment"/>
+        android:label="MediaFragment" />
 </navigation>
