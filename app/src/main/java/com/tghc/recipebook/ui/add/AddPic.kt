@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import com.tghc.recipebook.constant.REQUEST_CODE_IMAGE
+import com.tghc.recipebook.common.REQUEST_CODE_IMAGE
 import com.tghc.recipebook.databinding.AddPicBinding
 import com.tghc.recipebook.databinding.RowEditPicBinding
 import com.tghc.recipebook.extention.setGlideImage
@@ -57,7 +57,7 @@ class AddPic(private val addFragment: AddFragment) : BaseFragment<AddPicBinding>
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE_IMAGE)
     }
 
-    fun getImages(): MutableList<String> {
+    fun getImages(): List<String> {
         return recipe.imagePath
     }
 
@@ -83,13 +83,13 @@ class AddPic(private val addFragment: AddFragment) : BaseFragment<AddPicBinding>
             if (data?.clipData == null) {
                 val uri = data?.data
                 addFragment.imageUri.add(uri!!)
-                recipe.imagePath.add(uri.toString())
+//                recipe.imagePath.add(uri.toString())
             } else {
                 val numberOfImages = data.clipData!!.itemCount
                 for (i in 0 until numberOfImages) {
                     val uri = data.clipData!!.getItemAt(i).uri
                     addFragment.imageUri.add(uri)
-                    recipe.imagePath.add(uri.toString())
+//                    recipe.imagePath.add(uri.toString())
                 }
             }
             addPicAdapter.notifyDataSetChanged()

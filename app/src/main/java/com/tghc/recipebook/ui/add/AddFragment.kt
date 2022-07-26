@@ -10,13 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.firestore.FirebaseFirestore
-import com.tghc.recipebook.constant.MSG_ADD_TITLE
-import com.tghc.recipebook.constant.MSG_EXIT
-import com.tghc.recipebook.constant.MSG_FIREBASE_ERROR
-import com.tghc.recipebook.constant.MSG_RECIPE_SAVED
-import com.tghc.recipebook.data.model.Recipe
-import com.tghc.recipebook.data.viewmodel.FirebaseViewModel
+import com.tghc.recipebook.common.MSG_ADD_TITLE
+import com.tghc.recipebook.common.MSG_EXIT
+import com.tghc.recipebook.ui.viewmodel.RecipeViewModel
 import com.tghc.recipebook.databinding.FragmentAddBinding
+import com.tghc.recipebook.domain.model.Recipe
 import com.tghc.recipebook.extention.*
 import com.tghc.recipebook.ui.adapter.AddPagerAdapter
 import com.tghc.recipebook.ui.base.BaseFragment
@@ -27,7 +25,7 @@ class AddFragment : BaseFragment<FragmentAddBinding>(
     lateinit var recipe: Recipe
     var imageUri = ArrayList<Uri>()
     private lateinit var dialog: Dialog
-    private val firebaseViewModel: FirebaseViewModel by viewModels()
+    private val recipeViewModel: RecipeViewModel by viewModels()
     private lateinit var addDet: AddDet
     private lateinit var addIng: AddIng
     private lateinit var addPro: AddPro
@@ -40,7 +38,7 @@ class AddFragment : BaseFragment<FragmentAddBinding>(
         super.onViewCreated(view, savedInstanceState)
 
         recipe = arguments?.getSerializable("recipeData") as Recipe
-        flagEdit = recipe.recipeId.isNotEmpty()
+//        flagEdit = (!recipe.recipeId.equals("0"))  //.isNotEmpty()
 
         addDet = AddDet(this)
         addIng = AddIng(this)
@@ -100,37 +98,37 @@ class AddFragment : BaseFragment<FragmentAddBinding>(
     }
 
     private fun uploadImage(uri: Uri) {
-        firebaseViewModel.postImage(uri).observe(requireActivity()) {
-            it.response({ imagePath ->
-                recipe.imagePath.add(imagePath)
+        /* recipeViewModel.postImage(uri).observe(requireActivity()) {
+             it.response({ imagePath ->
+                 recipe.imagePath.add(imagePath)
 
-                count++
-                if (count < imageUri.size) {
-                    uploadImage(imageUri[count])
-                } else {
-                    uploadRecipe()
-                }
-            }, {
-                toast(MSG_FIREBASE_ERROR)
-            })
-        }
+                 count++
+                 if (count < imageUri.size) {
+                     uploadImage(imageUri[count])
+                 } else {
+                     uploadRecipe()
+                 }
+             }, {
+                 toast(MSG_FIREBASE_ERROR)
+             })
+        }*/
     }
 
     private fun uploadRecipe() {
-        firebaseViewModel.postRecipe(FirebaseFirestore.getInstance(), recipe)
+       /* recipeViewModel.postRecipe(FirebaseFirestore.getInstance(), recipe)
             .observe(requireActivity()) { baseResponse ->
-                baseResponse.response({ recipeId ->
+                *//*baseResponse.response({ recipeId ->
                     toast(MSG_RECIPE_SAVED)
                     navigateBack()
                 }, {
                     toast(MSG_FIREBASE_ERROR)
-                })
-            }
+                })*//*
+            }*/
     }
 
 
     fun dialogExit() {
-        dialog = showAlertDialog(MSG_EXIT,
+       /* dialog = showAlertDialog(MSG_EXIT,
             isCancelable = true, isCancelableTouchOutside = true, builderFunction = {
                 yesButton {
                     dialog.dismiss()
@@ -139,10 +137,10 @@ class AddFragment : BaseFragment<FragmentAddBinding>(
                 noButton {
                     dialog.dismiss()
                 }
-            })
+            })*/
     }
 
     private fun navigateBack() {
-        findNavController().popBackStack()
+       // findNavController().popBackStack()
     }
 }

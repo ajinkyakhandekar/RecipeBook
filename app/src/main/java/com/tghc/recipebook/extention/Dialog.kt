@@ -1,26 +1,7 @@
 package com.tghc.recipebook.extention
 
 import android.app.Dialog
-import android.content.Context
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
-import com.tghc.recipebook.constant.UNITS
-
-fun Fragment.showAlertDialog(
-    message: String?=null, isCancelable: Boolean = false, isCancelableTouchOutside: Boolean = false,
-    builderFunction: AlertDialog.Builder.() -> Any
-) : Dialog {
-    val builder = AlertDialog.Builder(requireContext())
-    builder.builderFunction()
-    val dialog = builder.create()
-
-    dialog.setMessage(message)
-    dialog.setCancelable(isCancelable)
-    dialog.setCanceledOnTouchOutside(isCancelableTouchOutside)
-    dialog.show()
-
-    return dialog
-}
 
 
 fun AlertDialog.Builder.okButton(handleClick: () -> Unit = {}) {

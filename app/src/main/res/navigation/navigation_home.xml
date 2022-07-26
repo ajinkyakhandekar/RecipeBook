@@ -24,7 +24,7 @@
         android:label="AddFragment">
         <argument
             android:name="recipeData"
-            app:argType="com.tghc.recipebook.data.model.Recipe" />
+            app:argType="com.tghc.recipebook.domain.model.Recipe" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"

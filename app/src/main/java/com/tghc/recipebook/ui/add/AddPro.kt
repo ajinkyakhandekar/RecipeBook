@@ -2,12 +2,9 @@ package com.tghc.recipebook.ui.add
 
 import android.os.Bundle
 import android.view.View
-import com.tghc.recipebook.constant.SIZE_PRO
+import com.tghc.recipebook.common.SIZE_PRO
 import com.tghc.recipebook.databinding.AddProBinding
 import com.tghc.recipebook.databinding.RowEditProBinding
-import com.tghc.recipebook.extention.getString
-import com.tghc.recipebook.extention.isEmpty
-import com.tghc.recipebook.extention.textWatcher
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
 import com.tghc.recipebook.ui.adapter.withAdapter
 import com.tghc.recipebook.ui.base.BaseFragment
@@ -17,7 +14,7 @@ class AddPro(private val addFragment: AddFragment) : BaseFragment<AddProBinding>
 ) {
 
     private lateinit var addProAdapter: RecyclerAdapter<String, RowEditProBinding>
-    private val procedure = addFragment.recipe.procedure
+    private val procedure = addFragment.recipe.procedure as MutableList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,9 +38,9 @@ class AddPro(private val addFragment: AddFragment) : BaseFragment<AddProBinding>
                 addProAdapter.updateData(procedure)
             }
 
-            binding.editRowPro.textWatcher {
+            /*binding.editRowPro.textWatcher {
                 procedure[adapterPosition] = binding.editRowPro.getString()
-            }
+            }*/
         }
 
 
@@ -55,9 +52,9 @@ class AddPro(private val addFragment: AddFragment) : BaseFragment<AddProBinding>
 
     fun getProcedure(): ArrayList<String> {
         val procedureArrayList = ArrayList<String>()
-        for (pro in procedure) {
+        /*for (pro in procedure) {
             if (isEmpty(pro)) procedureArrayList.add(pro)
-        }
+        }*/
         return procedureArrayList
     }
 }

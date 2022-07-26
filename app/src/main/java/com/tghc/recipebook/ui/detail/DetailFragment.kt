@@ -12,10 +12,10 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.firebase.firestore.FirebaseFirestore
-import com.tghc.recipebook.constant.*
-import com.tghc.recipebook.data.model.Recipe
-import com.tghc.recipebook.data.viewmodel.FirebaseViewModel
+import com.tghc.recipebook.common.*
+import com.tghc.recipebook.ui.viewmodel.RecipeViewModel
 import com.tghc.recipebook.databinding.*
+import com.tghc.recipebook.domain.model.Recipe
 import com.tghc.recipebook.extention.*
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
 import com.tghc.recipebook.ui.adapter.withAdapter
@@ -27,14 +27,14 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(
     private lateinit var recipe: Recipe
     private lateinit var deleteDialog: Dialog
     private lateinit var tagAdapter: RecyclerAdapter<String, RowTagBinding>
-    private val firebaseViewModel: FirebaseViewModel by viewModels()
+    private val recipeViewModel: RecipeViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val recipeId = arguments?.getString("recipeId")
 
-        firebaseViewModel.getRecipe(FirebaseFirestore.getInstance(),recipeId!!)
+       /* recipeViewModel.getRecipe(FirebaseFirestore.getInstance(),recipeId!!)
             .observe(requireActivity()) { baseResponse ->
                 baseResponse.response({
                     recipe = it
@@ -42,7 +42,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(
                 }, {
                     toast(MSG_FIREBASE_ERROR)
                 })
-            }
+            }*/
     }
 
     private fun setData() {
@@ -148,13 +148,13 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(
     }
 
     private fun deleteItem() {
-        firebaseViewModel.deleteRecipe(FirebaseFirestore.getInstance(), recipe.recipeId)
+        /*recipeViewModel.deleteRecipe(FirebaseFirestore.getInstance(), recipe.recipeId)
             .observe(requireActivity()) { baseResponse ->
                 baseResponse.response({
                     findNavController().popBackStack()
                 }, {
                     toast(MSG_FIREBASE_ERROR)
                 })
-            }
+            }*/
     }
 }
