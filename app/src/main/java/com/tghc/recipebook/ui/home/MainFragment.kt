@@ -5,13 +5,12 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tghc.recipebook.R
-import com.tghc.recipebook.constant.MSG_FIREBASE_ERROR
-import com.tghc.recipebook.data.model.Recipe
-import com.tghc.recipebook.data.viewmodel.FirebaseViewModel
+import com.tghc.recipebook.common.MSG_FIREBASE_ERROR
+import com.tghc.recipebook.ui.viewmodel.RecipeViewModel
 import com.tghc.recipebook.databinding.FragmentMainBinding
 import com.tghc.recipebook.databinding.RowMainBinding
+import com.tghc.recipebook.domain.model.Recipe
 import com.tghc.recipebook.extention.navigate
-import com.tghc.recipebook.extention.response
 import com.tghc.recipebook.extention.setGlideImage
 import com.tghc.recipebook.extention.toast
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
@@ -21,9 +20,9 @@ import com.tghc.recipebook.ui.base.BaseFragment
 class MainFragment : BaseFragment<FragmentMainBinding>(
     FragmentMainBinding::inflate
 ) {
-    private val firebaseViewModel: FirebaseViewModel by viewModels()
+    private val recipeViewModel: RecipeViewModel by viewModels()
     private lateinit var mainAdapter: RecyclerAdapter<Recipe, RowMainBinding>
-    private var recipeList: MutableList<Recipe> = ArrayList()
+    private var recipeList =  mutableListOf<Recipe>()
     private var page = 0
     private var isLastPage: Boolean = false
     private var isLoading: Boolean = false
@@ -45,7 +44,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(
             binding.relativeRowMain.setOnClickListener {
                 navigate(
                     MainFragmentDirections.actionMainFragmentToDetailFragment(
-                        recipeList[adapterPosition].recipeId
+                        recipeList[adapterPosition].recipeId.toString()
                     )
                 )
             }
@@ -63,7 +62,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(
     }
 
     private fun getItemsAPI(page: Int) {
-        firebaseViewModel.getRecipeList(FirebaseFirestore.getInstance(), page)
+        /*recipeViewModel.getRecipeList(FirebaseFirestore.getInstance(), page)
             .observe(requireActivity()) { baseResponse ->
                 baseResponse.response({
                     recipeList.addAll(it)
@@ -72,6 +71,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(
                 }, {
                     toast(MSG_FIREBASE_ERROR)
                 })
-            }
+            }*/
     }
 }

@@ -10,7 +10,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.tghc.recipebook.R
-import com.tghc.recipebook.constant.SERVE_TYPE
+import com.tghc.recipebook.common.SERVE_TYPE
 import com.tghc.recipebook.databinding.AddDtBinding
 import com.tghc.recipebook.databinding.RowTagBinding
 import com.tghc.recipebook.extention.getString
@@ -24,7 +24,7 @@ class AddDet(addFragment: AddFragment) : BaseFragment<AddDtBinding>(
 ) {
 
     private lateinit var tagAdapter: RecyclerAdapter<String, RowTagBinding>
-    lateinit var tagsArray: MutableList<String>
+    var tagsArray = mutableListOf<String>()
     private val recipe = addFragment.recipe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class AddDet(addFragment: AddFragment) : BaseFragment<AddDtBinding>(
         binding.edtServeType.text = recipe.type
         binding.edtPrepTime.text = recipe.pTime
         binding.edtCookTime.text = recipe.cTime
-        tagsArray = recipe.tags
+        tagsArray = recipe.tags as MutableList<String>
 
         //tags
         val flexBoxLayoutManager = FlexboxLayoutManager(requireActivity())

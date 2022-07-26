@@ -2,15 +2,12 @@ package com.tghc.recipebook.ui.add
 
 import android.os.Bundle
 import android.view.View
-import com.tghc.recipebook.constant.SIZE_ING
-import com.tghc.recipebook.constant.UNITS
-import com.tghc.recipebook.data.model.Ingredient
+import com.tghc.recipebook.common.SIZE_ING
+import com.tghc.recipebook.common.UNITS
 import com.tghc.recipebook.databinding.AddIngBinding
 import com.tghc.recipebook.databinding.RowEditIngBinding
-import com.tghc.recipebook.extention.getString
-import com.tghc.recipebook.extention.isEmpty
+import com.tghc.recipebook.domain.model.Ingredient
 import com.tghc.recipebook.extention.showAlertDialog
-import com.tghc.recipebook.extention.textWatcher
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
 import com.tghc.recipebook.ui.adapter.withAdapter
 import com.tghc.recipebook.ui.base.BaseFragment
@@ -20,7 +17,7 @@ class AddIng(private val addFragment: AddFragment) : BaseFragment<AddIngBinding>
 ) {
 
     private lateinit var addIngAdapter: RecyclerAdapter<Ingredient, RowEditIngBinding>
-    private val ingredient = addFragment.recipe.ingredient
+    private val ingredient = addFragment.recipe.ingredient as MutableList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,7 +60,7 @@ class AddIng(private val addFragment: AddFragment) : BaseFragment<AddIngBinding>
                 })
             }
 
-            binding.editRowIng.textWatcher {
+            /*binding.editRowIng.textWatcher {
                 val mIng = Ingredient(
                     binding.editRowIng.getString(),
                     ingredient[adapterPosition].num,
@@ -79,7 +76,7 @@ class AddIng(private val addFragment: AddFragment) : BaseFragment<AddIngBinding>
                     ingredient[adapterPosition].type
                 )
                 ingredient[adapterPosition] = mIng
-            }
+            }*/
         }
 
         binding.fabIng.setOnClickListener {
@@ -91,7 +88,7 @@ class AddIng(private val addFragment: AddFragment) : BaseFragment<AddIngBinding>
     fun getIngredients(): ArrayList<Ingredient> {
         val ingredientsArrayList = ArrayList<Ingredient>()
         for (ing in ingredient) {
-            if (isEmpty(ing.ingredient)) ingredientsArrayList.add(ing)
+           // if (isEmpty(ing.ingredient)) ingredientsArrayList.add(ing)
         }
         return ingredientsArrayList
     }

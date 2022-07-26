@@ -23,14 +23,14 @@ fun DatePicker.initialise(dateChanged: () -> Unit) {
     init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), dateChangeListener)
 }
 
-fun String.dateInFormat(format: String): Date? {
+/*fun String.dateInFormat(format: String): Date? {
     val dateFormat = SimpleDateFormat(format, Locale.getDefault())
     var parsedDate: Date? = null
     catchAll {
         parsedDate = dateFormat.parse(this)
     }
     return parsedDate
-}
+}*/
 
 fun Date.dateInString(format: String): String {
     val sdf = SimpleDateFormat(format, Locale.US)
