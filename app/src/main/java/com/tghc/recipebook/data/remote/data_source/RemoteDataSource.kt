@@ -9,6 +9,8 @@ class RemoteDataSource @Inject constructor(private val firebaseService: Firebase
 
    suspend fun getRecipeCount() = firebaseService.getRecipeCount()
 
+   suspend fun deleteRecipeRemote(recipeId: String) = firebaseService.deleteRecipeService(recipeId)
+
 //    suspend fun getSchedule() = firebaseService.getSchedule()
 //
 //    suspend fun getDriverStandings() = firebaseService.getDriverStandings()

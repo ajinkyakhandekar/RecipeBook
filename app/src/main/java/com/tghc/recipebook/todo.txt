@@ -1,7 +1,15 @@
 
-
-1. Pass Recipie in argument to DetailsFragment
+*1. Flow Diagram
 2. Tags not visible
 3. Ing Row items clipped
 4. Image Loading
-5.
+5. Pagination
+6. Backup data as Json
+
+
+Functions:
+1. Display List
+2. Display Single
+3. Add Item
+4. Edit Item
+5. Delete Item

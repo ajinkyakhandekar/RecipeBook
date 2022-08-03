@@ -6,8 +6,7 @@ import java.util.*
 
 data class RecipeDto(
     @DocumentId
-    var documentId: String = "",
-    var recipeId: Long = 0L,
+    var recipeId: String = "",
     var userId: String = "",
     var id: String = "",
     var title: String = "",

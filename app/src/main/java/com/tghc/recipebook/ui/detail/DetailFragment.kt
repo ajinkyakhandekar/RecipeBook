@@ -4,23 +4,30 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.google.firebase.firestore.FirebaseFirestore
 import com.tghc.recipebook.common.*
-import com.tghc.recipebook.ui.viewmodel.RecipeViewModel
 import com.tghc.recipebook.databinding.*
 import com.tghc.recipebook.domain.model.Recipe
-import com.tghc.recipebook.extention.*
+import com.tghc.recipebook.extention.navigate
+import com.tghc.recipebook.extention.noButton
+import com.tghc.recipebook.extention.showAlertDialog
+import com.tghc.recipebook.extention.yesButton
 import com.tghc.recipebook.ui.adapter.RecyclerAdapter
 import com.tghc.recipebook.ui.adapter.withAdapter
 import com.tghc.recipebook.ui.base.BaseFragment
+import com.tghc.recipebook.ui.viewmodel.RecipeViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class DetailFragment : BaseFragment<FragmentDetailBinding>(
     FragmentDetailBinding::inflate
 ) {
@@ -34,15 +41,25 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(
 
         val recipeId = arguments?.getString("recipeId")
 
-       /* recipeViewModel.getRecipe(FirebaseFirestore.getInstance(),recipeId!!)
-            .observe(requireActivity()) { baseResponse ->
-                baseResponse.response({
-                    recipe = it
-                    setData()
-                }, {
-                    toast(MSG_FIREBASE_ERROR)
-                })
-            }*/
+        recipeId?.let {
+            recipeViewModel.recipeId = recipeId
+            setObservers()
+        }
+    }
+
+    private fun setObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                recipeViewModel.uiState.collect { uiState ->
+                    // binding.progressBar.isVisible = uiState.isLoading
+
+                    uiState.recipe?.let {
+                        recipe = it
+                        setData()
+                    }
+                }
+            }
+        }
     }
 
     private fun setData() {
@@ -57,12 +74,12 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(
         addDisplayView(recipe.servings, recipe.type, servings)
 
         //Ingredients
-        for (ingredient in recipe.ingredient!!) {
+        recipe.ingredient.forEach {
             val ingBinding = RowDisplayIngBinding.inflate(LayoutInflater.from(context))
 
-            ingBinding.textDisplayIng.text = "${ingredient.num} ${ingredient.type}"
-            ingBinding.textDisplayAmt.text = ingredient.ingredient
-            val checkBox: CheckBox = ingBinding.checkDisplayIng
+            ingBinding.textDisplayIng.text = "${it.num} ${it.type}"
+            ingBinding.textDisplayAmt.text = it.ingredient
+            val checkBox = ingBinding.checkDisplayIng
 
             ingBinding.textDisplayIng.setOnClickListener {
                 checkBox.isChecked = !checkBox.isChecked
@@ -74,7 +91,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(
         }
 
         //Procedure
-        for ((i, procedure) in recipe.procedure.withIndex()) {
+        recipe.procedure.forEachIndexed { i, procedure ->
             val proBinding = RowDisplayProBinding.inflate(LayoutInflater.from(context))
 
             val j = i + 1
@@ -102,9 +119,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(
             builder.setCancelable(true)
             builder.setItems(OVERFLOW_TYPE) { dialog, item ->
                 when (item) {
-                    0 -> {
-                        navigate(DetailFragmentDirections.actionDetailFragmentToAddFragment(recipe))
-                    }
+                    0 -> navigate(DetailFragmentDirections.actionDetailFragmentToAddFragment(recipe))
                     1 -> dialogDelete()
                 }
                 dialog.dismiss()

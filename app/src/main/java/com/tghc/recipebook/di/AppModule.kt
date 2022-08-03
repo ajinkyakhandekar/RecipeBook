@@ -78,14 +78,15 @@ object AppModule {
 
     // ----------------- Use Cases -------------------- //
 
+    // --------- Recipe Count -------- //
     @Provides
     @Singleton
-    fun provideGetRecipeLocalCountUseCase(recipeRepositoryImpl: RecipeRepositoryImpl) =
+    fun provideGetRecipeCountLocalUseCase(recipeRepositoryImpl: RecipeRepositoryImpl) =
         GetRecipeCountLocalUseCase(recipeRepositoryImpl)
 
     @Provides
     @Singleton
-    fun provideGetRecipeRemoteCountUseCase(recipeRepositoryImpl: RecipeRepositoryImpl) =
+    fun provideGetRecipeCountRemoteUseCase(recipeRepositoryImpl: RecipeRepositoryImpl) =
         GetRecipeCountRemoteUseCase(recipeRepositoryImpl)
 
     @Provides
@@ -95,19 +96,22 @@ object AppModule {
         getRecipeCountRemoteUseCase: GetRecipeCountRemoteUseCase
     ) = IsUpdateRequiredUseCase(getRecipeCountLocalUseCase, getRecipeCountRemoteUseCase)
 
+
+    // --------- Recipe List -------- //
+
     @Provides
     @Singleton
-    fun provideRecipeLocalUseCase(recipeRepositoryImpl: RecipeRepositoryImpl) =
+    fun provideRecipeListLocalUseCase(recipeRepositoryImpl: RecipeRepositoryImpl) =
         GetRecipeListLocalUseCase(recipeRepositoryImpl)
 
     @Provides
     @Singleton
-    fun provideRecipeRemoteUseCase(recipeRepositoryImpl: RecipeRepositoryImpl) =
+    fun provideRecipeListRemoteUseCase(recipeRepositoryImpl: RecipeRepositoryImpl) =
         GetRecipeListRemoteUseCase(recipeRepositoryImpl)
 
     @Provides
     @Singleton
-    fun provideRecipeUseCase(
+    fun provideRecipeListUseCase(
         isUpdateRequiredUseCase: IsUpdateRequiredUseCase,
         getRecipeCountLocalUseCase: GetRecipeListLocalUseCase,
         getRecipeListRemoteUseCase: GetRecipeListRemoteUseCase
@@ -117,4 +121,11 @@ object AppModule {
             getRecipeCountLocalUseCase,
             getRecipeListRemoteUseCase
         )
+
+    // --------- Recipe Item -------- //
+
+    @Provides
+    @Singleton
+    fun provideRecipeUseCase(recipeRepositoryImpl: RecipeRepositoryImpl) =
+        GetRecipeUseCase(recipeRepositoryImpl)
 }

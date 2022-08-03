@@ -1,9 +1,9 @@
 package com.tghc.recipebook.domain.model
 
-import java.util.*
+import java.io.Serializable
 
 data class Recipe(
-    var recipeId: Long = 0L,
+    var recipeId: String = "",
     var userId: String = "",
     var title: String = "",
     var type: String = "",
@@ -26,10 +26,10 @@ data class Recipe(
     var xtra_3: String = "",
     var xtra_4: String = "",
     var xtra_5: String = "",
-)
+) : Serializable
 
 data class Ingredient(
     var ingredient: String = "",
     var num: String = "",
     var type: String = ""
-)
+) : Serializable

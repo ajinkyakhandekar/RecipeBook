@@ -10,3 +10,5 @@ fun Any?.log(message: Any? = null) =
     } else {
         Log.v(TAG, "$message : $this")
     }
+
+fun Any?.isNull() = this == null

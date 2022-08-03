@@ -7,12 +7,9 @@ import android.text.TextUtils
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.firestore.FirebaseFirestore
 import com.tghc.recipebook.common.MSG_ADD_TITLE
-import com.tghc.recipebook.common.MSG_EXIT
-import com.tghc.recipebook.ui.viewmodel.RecipeViewModel
+import com.tghc.recipebook.ui.viewmodel.RecipeListViewModel
 import com.tghc.recipebook.databinding.FragmentAddBinding
 import com.tghc.recipebook.domain.model.Recipe
 import com.tghc.recipebook.extention.*
@@ -25,7 +22,7 @@ class AddFragment : BaseFragment<FragmentAddBinding>(
     lateinit var recipe: Recipe
     var imageUri = ArrayList<Uri>()
     private lateinit var dialog: Dialog
-    private val recipeViewModel: RecipeViewModel by viewModels()
+    private val recipeListViewModel: RecipeListViewModel by viewModels()
     private lateinit var addDet: AddDet
     private lateinit var addIng: AddIng
     private lateinit var addPro: AddPro

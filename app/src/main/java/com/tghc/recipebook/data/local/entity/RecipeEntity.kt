@@ -8,8 +8,8 @@ import java.util.*
 
 @Entity(tableName = RECIPE_TABLE)
 data class RecipeEntity(
-    @PrimaryKey(autoGenerate = true)
-    var recipeId: Long = 0L,
+    @PrimaryKey
+    var recipeId: String = "",
     var userId: String = "",
     var title: String = "",
     var type: String = "",

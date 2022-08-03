@@ -36,6 +36,17 @@ class FirebaseService(
         return counterDto?.count ?: 0
     }
 
+    suspend fun deleteRecipeService(recipeId: String):Boolean {
+        return try {
+            firebaseFirestore.collection(COLLECTION_RECIPE).document(recipeId).delete().await()
+            println("delete firebase success---------")
+            true
+        }catch (e: Exception){
+            println("delete firebase failed------")
+            false
+        }
+    }
+
 }
 
 
